@@ -1,0 +1,18 @@
+<form [formGroup]="form">
+    <input [formControl]="form.controls.name">
+    <input [formControl]="form.controls.category">
+    <hr>
+    <div>
+        <div formArrayName="rows" *ngFor="let row of form.get('rows').controls; let i = index">
+            <div [formGroupName]="i">
+                <input name="col1"  type="text" formControlName="col1">
+            </div>
+        </div>
+    </div>
+    <div>
+        <button type="button" (click)="addRow()">Add row</button><br>
+        <button type="submit" (click)="save()">Save</button>
+    </div>
+</form>
+
+

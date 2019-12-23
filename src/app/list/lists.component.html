@@ -1,0 +1,12 @@
+<h1>Lists</h1>
+
+<ul>
+    <li *ngFor="let list of lists">{{list.id}} {{list.name}}
+        <a routerLink="/list/{{list.id}}" routerLinkActive="active">{{list.name}}</a>
+        <button (click)="delete(list.id)">Remove</button>
+    </li>
+</ul>
+<form #listForm="ngForm" novalidate (ngSubmit)="createList(listForm.value)">
+    <input type="text" name="name" placeholder="Name of new list" ngModel />
+    <button>Create</button>
+</form>
