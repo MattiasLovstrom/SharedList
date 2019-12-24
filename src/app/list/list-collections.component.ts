@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ListCollectionService, Collection } from '../services/list-collection.service';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 
 @Component({
     selector : 'list-collections',
@@ -34,7 +34,7 @@ export class ListCollectionsComponent implements OnInit {
         const listCollection = this.listCollectionService.create();
         listCollection.name = form.name;
         this.collections = this.listCollectionService.list();
-        this.router.navigate(["/" + listCollection.id]);
+        this.router.navigate([`/${listCollection.id}`]);
     }
 
     delete(id) {

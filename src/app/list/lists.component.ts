@@ -9,7 +9,7 @@ import { Subject } from 'rxjs';
     templateUrl: "./lists.component.html"
 })
 export class ListsComponent implements OnInit {
-    listcollectionId: string;
+    collectionId: string;
     lists: List[];
     listName: string = null;
     subject: Subject<any> = new Subject<any>();
@@ -26,26 +26,21 @@ export class ListsComponent implements OnInit {
             takeUntil(this.subject.asObservable())
         )
         .subscribe(async id => {
-            this.listcollectionId = id;
+            this.collectionId = id;
             var list = this.listService.read(id);
             console.log(list);
-            // this.form.controls.name.setValue(list.name);
-            // list.rows.forEach(line => {
-            //   this.addRow(line);
-            // });
         });
 
         this.lists = this.listService.list();
-
     }
 
     createList(nameElement: any) {
         const list = this.listService.create();
         list.name = nameElement.name;
-        this.router.navigate([`/${this.listcollectionId}/${list.id}`]);
+        this.router.navigate([`/${this.collectionId}/${list.id}`]);
     }
 
-    delete(id) {
+    delete(id: string) {
         this.listService.delete(id);
     }
 }

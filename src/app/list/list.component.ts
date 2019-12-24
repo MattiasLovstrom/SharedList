@@ -67,11 +67,7 @@ export class ListComponent implements OnInit{
 
       this.listService.update(list);
 
-      this.router.navigate(["/" + this.collectionId]);
-    }
-
-    onKey(){
-      console.log(1);
+      this.router.navigate([`/${this.collectionId}`]);
     }
 }
 
