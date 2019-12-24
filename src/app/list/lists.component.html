@@ -2,7 +2,7 @@
 
 <ul>
     <li *ngFor="let list of lists">{{list.id}} {{list.name}}
-        <a routerLink="/list/{{list.id}}" routerLinkActive="active">{{list.name}}</a>
+        <a routerLink="/{{listcollectionId}}/{{list.id}}" routerLinkActive="active">{{list.name}}</a>
         <button (click)="delete(list.id)">Remove</button>
     </li>
 </ul>

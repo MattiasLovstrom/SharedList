@@ -12,6 +12,7 @@ export class ListComponent implements OnInit{
     form: FormGroup;
     subject: Subject<any> = new Subject<any>();
     id: string;
+    collectionId: string;
     
     constructor(
       private route: ActivatedRoute, 
@@ -29,12 +30,13 @@ export class ListComponent implements OnInit{
     ngOnInit(): void {
         this.route.paramMap
             .pipe(
-                map(x => x.get("id")),
+                map(x => [x.get("id"), x.get("listcollection")]),
                 takeUntil(this.subject.asObservable())
             )
             .subscribe(async id => {
-                this.id = id;
-                var list = this.listService.read(id);
+                this.id = id[0];
+                this.collectionId = id[1];
+                var list = this.listService.read(this.id);
                 console.log(list);
                 this.form.controls.name.setValue(list.name);
                 list.rows.forEach(line => {
@@ -65,7 +67,7 @@ export class ListComponent implements OnInit{
 
       this.listService.update(list);
 
-      this.router.navigate(["/list"]);
+      this.router.navigate(["/" + this.collectionId]);
     }
 
     onKey(){
