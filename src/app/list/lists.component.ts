@@ -40,7 +40,13 @@ export class ListsComponent implements OnInit {
         this.router.navigate([`/${this.collectionId}/${list.id}`]);
     }
 
-    delete(id: string) {
-        this.listService.delete(id);
+    edit(id: string) {
+        this.router.navigate([`/${this.collectionId}/${id}`]);
+    }
+
+    copy(list: List) {
+        const newList = this.listService.create(list);
+        newList.name = list.name;
+        this.router.navigate([`/${this.collectionId}/${newList.id}`]);
     }
 }

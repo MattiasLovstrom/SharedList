@@ -1,18 +1,18 @@
 <form [formGroup]="form">
-    <input [formControl]="form.controls.name">
-    <input [formControl]="form.controls.category">
+    <input [formControl]="form.controls.name" placeholder="List name" [tabindex]="1">
+    <input [formControl]="form.controls.category" placeholder="Category" [tabindex]="10">
     <hr>
     <div>
         <div formArrayName="rows" *ngFor="let row of form.get('rows').controls; let i = index">
             <div [formGroupName]="i">
-                <input name="col1"  type="text" formControlName="col1">
+                <input name="col1"  type="text" formControlName="col1" [tabindex]="i + 100"><button title="Remove" class="fa fa-times" (click)="removeRow(i)" [tabindex]="i + 10000"></button>
             </div>
         </div>
     </div>
     <div>
-        <button type="button" (click)="addRow()">Add row</button><br>
-        <button type="submit" (click)="save()">Save</button>
+        <button title="Add row" type="button" class="fa fa-plus" (click)="addRow()" [tabindex]="900"></button><br>
+        <button type="submit" (click)="save()" [tabindex]="1000">Save</button>
+        <button type="submit" (click)="cancel()" [tabindex]="1010">Cancel</button>
+        <button type="submit" (click)="delete()" [tabindex]="1020">Delete</button>
     </div>
 </form>
-
-

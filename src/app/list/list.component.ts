@@ -9,11 +9,11 @@ import { Subject } from 'rxjs';
     templateUrl: './list.component.html'
 })
 export class ListComponent implements OnInit{
+    list: List;
     form: FormGroup;
     subject: Subject<any> = new Subject<any>();
-    id: string;
     collectionId: string;
-    
+
     constructor(
       private route: ActivatedRoute, 
       private listService: ListService, 
@@ -34,24 +34,33 @@ export class ListComponent implements OnInit{
                 takeUntil(this.subject.asObservable())
             )
             .subscribe(async id => {
-                this.id = id[0];
+                var listid = id[0];
                 this.collectionId = id[1];
-                var list = this.listService.read(this.id);
-                console.log(list);
-                this.form.controls.name.setValue(list.name);
-                list.rows.forEach(line => {
+                this.list = this.listService.read(listid);
+                this.form.controls.name.setValue(this.list.name);
+                this.form.controls.category.setValue(this.list.category);
+                this.list.rows.forEach(line => {
                   this.addRow(line);
                 });
+                if (this.list.rows.length == 0)
+                {
+                  for(var i = 0; i < 3; i++) this.addRow('');
+                }
             });
     }
 
     addRow(value) {
-        const creds = this.form.controls.rows as FormArray;
-        creds.push(this.formBuiler.group({
+        const rows = this.form.controls.rows as FormArray;
+        rows.push(this.formBuiler.group({
           col1: value
         }));
       }
     
+    removeRow(index: number) {
+      const rows = this.form.controls.rows as FormArray;
+      rows.removeAt(index);   
+    }  
+
     save() {
       var name = this.form.getRawValue().name;
       var category = this.form.getRawValue().category;
@@ -60,16 +69,23 @@ export class ListComponent implements OnInit{
       var rows = [];
       rowsArray.forEach(x=>rows.push(x.col1));
       
-      var list = new List(this.id);
-      list.name = name;
-      list.category = category;
-      list.rows = rows; 
+      this.list.name = name;
+      this.list.category = category;
+      this.list.rows = rows; 
 
-      this.listService.update(list);
+      this.listService.update(this.list);
 
       this.router.navigate([`/${this.collectionId}`]);
     }
+
+    delete() {
+      this.listService.delete(this.list.id);
+
+      this.router.navigate([`/${this.collectionId}`]);
+    }
+
+
+    cancel() {
+      this.router.navigate([`/${this.collectionId}`]);
+    }
 }
-
-
-

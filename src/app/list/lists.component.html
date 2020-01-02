@@ -1,12 +1,18 @@
 <h1>Lists</h1>
-
-<ul>
-    <li *ngFor="let list of lists">{{list.id}} {{list.name}}
-        <a routerLink="/{{collectionId}}/{{list.id}}" routerLinkActive="active">{{list.name}}</a>
-        <button (click)="delete(list.id)">Remove</button>
-    </li>
-</ul>
 <form #listForm="ngForm" novalidate (ngSubmit)="createList(listForm.value)">
     <input type="text" name="name" placeholder="Name of new list" ngModel />
-    <button>Create</button>
+    <button title="Create" class="fa fa-plus"></button>
 </form>
+<ul>
+    <li *ngFor="let list of lists">
+        <a routerLink="/{{collectionId}}/{{list.id}}" routerLinkActive="active">
+            <strong>{{list.name}}</strong> {{list.created.toLocaleString()}}
+        </a>
+        <button title="Copy" (click)="copy(list)" class="fa fa-copy"></button>
+        <p *ngFor="let row of list.rows">
+            {{row}}
+        </p>
+    
+    </li>
+</ul>
+

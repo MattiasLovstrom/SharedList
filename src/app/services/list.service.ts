@@ -7,11 +7,22 @@ export class ListService{
     lists: List[] = [];
     lastListId: number = 0;
 
-    create(): List  {
-        var newList = new List((this.lastListId++).toString());
-        this.lists.push(newList);
+    create(oldList: List = null): List  {
+        var list: List;
+        if (oldList)
+        {
+            list = JSON.parse(JSON.stringify(oldList));
+        } else
+        {
+            list = new List();
+        }
+        list.created = new Date();
+        list.id = (this.lastListId++).toString();
+
+        this.lists.push(list);
+        this.lists.sort((a, b) => a.created>b.created ? -1 : a.created<b.created ? 1 : 0)
        
-        return newList;
+        return list;
     }
 
     read(id :string): List {
@@ -26,7 +37,7 @@ export class ListService{
         var existing = this.lists.find(x=>x.id === list.id);
         this.lists.splice(this.lists.indexOf(existing), 1);
         this.lists.push(list);
-        this.lists.sort((a, b) => a.name.localeCompare(b.name))
+        this.lists.sort((a, b) => a.created>b.created ? -1 : a.created<b.created ? 1 : 0)
     }
 
     delete(id: string) {
@@ -36,11 +47,8 @@ export class ListService{
 }
 
 export class List{
-    constructor(id: string){
-        this.id = id;
-    }
-
     id: string;
+    created: Date;
     name: string;
     category: string;
     rows: string[] = [];

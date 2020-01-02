@@ -1,1 +1,30 @@
 /* You can add global styles to this file, and also import other style files */
+button.fa {
+    border-color: transparent;
+    background-color:transparent;
+}
+
+li {
+    margin-top: 1em;
+    list-style: none;
+}
+
+p:nth-child(even) {
+    background-color: lightyellow;
+}
+
+p {
+    margin: 0px;
+}
+
+.fa-times{
+    color: red;
+}
+
+.fa-plus {
+    color: green;
+}
+
+.fa-check {
+    color: green;
+}
