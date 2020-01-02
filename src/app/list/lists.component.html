@@ -1,5 +1,8 @@
 <h1>Lists</h1>
 <form #listForm="ngForm" novalidate (ngSubmit)="createList(listForm.value)">
+    <select name="lang" [(ngModel)]="languageId" >
+        <option *ngFor="let language of languages" [ngValue]="language.key">{{language.name}}</option>
+    </select>
     <input type="text" name="name" placeholder="Name of new list" ngModel />
     <button title="Create" class="fa fa-plus"></button>
 </form>

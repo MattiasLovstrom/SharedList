@@ -52,4 +52,5 @@ export class List{
     name: string;
     category: string;
     rows: string[] = [];
+    language: string;
 }
