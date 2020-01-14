@@ -1,48 +1,35 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
     providedIn: "root"
 })
 export class ListService{
+    private readonly BaseUrl = "https://localhost:44388/api/0_1/Lists";
+
     lists: List[] = [];
     lastListId: number = 0;
 
-    create(oldList: List = null): List  {
-        var list: List;
-        if (oldList)
-        {
-            list = JSON.parse(JSON.stringify(oldList));
-        } else
-        {
-            list = new List();
+    constructor(private httpClient: HttpClient) {}
+
+    create(list: List): any  {
+        return this.httpClient.post<List>(this.BaseUrl, list);
+    }
+
+    read(listCollectionId:string, id :string = undefined): any {
+        let params = "?listCollectionId=" + listCollectionId;
+        if (id){
+            params = params + "&id=" + id;
         }
-        list.created = new Date();
-        list.id = (this.lastListId++).toString();
-
-        this.lists.push(list);
-        this.lists.sort((a, b) => a.created>b.created ? -1 : a.created<b.created ? 1 : 0)
-       
-        return list;
-    }
-
-    read(id :string): List {
-        return this.lists.find(x => x.id === id);
-    }
-
-    list(): List[] {
-        return this.lists;
+        return this.httpClient.get<List>(this.BaseUrl + params);
     }
 
     update(list: List) {
-        var existing = this.lists.find(x=>x.id === list.id);
-        this.lists.splice(this.lists.indexOf(existing), 1);
-        this.lists.push(list);
-        this.lists.sort((a, b) => a.created>b.created ? -1 : a.created<b.created ? 1 : 0)
+        return this.httpClient.put<List>(this.BaseUrl, list);
     }
 
     delete(id: string) {
-        var existing = this.lists.find(x=>x.id === id);
-        this.lists.splice(this.lists.indexOf(existing), 1);
+        return this.httpClient.delete<List>(this.BaseUrl + "?id=" + id);
     }
 }
 
@@ -52,5 +39,6 @@ export class List{
     name: string;
     category: string;
     rows: string[] = [];
-    language: string;
+    languageId: string;
+    listCollectionId: string;
 }

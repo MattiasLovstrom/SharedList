@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ListCollectionService, Collection } from '../services/list-collection.service';
 import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
     selector : 'list-collections',
@@ -12,13 +13,14 @@ import { Router } from '@angular/router';
         </form>
         <ul>
     <li *ngFor="let collection of collections">
-        <a routerLink="/{{collection.name}}" routerLinkActive="active">{{collection.id}} {{collection.name}}</a>
+        <a routerLink="/{{collection.id}}" routerLinkActive="active">{{collection.id}} {{collection.name}}</a>
         <button (click)="delete(collection.id)">Remove</button>
     </li>
 </ul>
     `
 })
 export class ListCollectionsComponent implements OnInit {
+    
     collections: Collection[] = [];
     
     constructor(
@@ -27,17 +29,28 @@ export class ListCollectionsComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.collections = this.listCollectionService.list();
+        this.reload();
+    }
+
+    reload() {
+        let s = this.listCollectionService.read().subscribe(result =>{
+            this.collections = result;
+            s.unsubscribe();
+        });
     }
 
     create(form: any) {
-        const listCollection = this.listCollectionService.create();
-        listCollection.name = form.name;
-        this.collections = this.listCollectionService.list();
-        this.router.navigate([`/${listCollection.id}`]);
+        let s= this.listCollectionService.create(form.name).subscribe(result=>
+            {
+                console.log("Creating collection: ", result);
+                this.router.navigate([`/${result.id}`]);
+                s.unsubscribe();
+            });  
     }
 
     delete(id) {
-        this.listCollectionService.delete(id);
+        let s = this.listCollectionService.delete(id).subscribe(result=>{
+            this.reload();
+        });
     }
 } 

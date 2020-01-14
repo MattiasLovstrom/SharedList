@@ -10,6 +10,8 @@ import { ListModule } from './list/list.module';
 import { ListCollectionsModule } from './list/list-collections.module';
 import { ListCollectionsComponent } from './list/list-collections.component';
 
+import { HttpClientModule } from '@angular/common/http'; 
+
 const routes: Routes = [
   { path: '', component: ListCollectionsComponent },
   { path: ':listcollection', component: ListsComponent },
@@ -25,7 +27,8 @@ const routes: Routes = [
     ListsModule,
     ListModule,
     RouterModule.forRoot(routes),
-    ListCollectionsModule
+    ListCollectionsModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

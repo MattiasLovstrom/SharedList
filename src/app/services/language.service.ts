@@ -1,14 +1,16 @@
 import { Injectable } from "@angular/core";
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
     providedIn: "root"
 })
 export class LanguageService {
-    read(): Language[] {
-        return [ 
-            {key:"sv", name: "Svenska"},
-            {key:"en", name: "Enlish"}
-        ];
+    private readonly BaseUrl = "https://localhost:44388/";
+
+    constructor(private httpClient: HttpClient) {}
+
+    read():any {
+        return this.httpClient.get<Language>(this.BaseUrl + "/api/0_1/Languages");  
     } 
 }
 

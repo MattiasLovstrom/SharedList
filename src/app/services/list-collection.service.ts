@@ -1,45 +1,43 @@
 import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable({
     providedIn: "root"
 })
 export class ListCollectionService {
+    private readonly BaseUrl = "https://localhost:44388/api/0_1/ListCollections";
+
+    
     collections: Collection[] = [];
     lastCollectionId: number = 0;
     
-    create(): Collection  {
-        var collectionList = new Collection((this.lastCollectionId++).toString());
-        this.collections.push(collectionList);
-       console.log(this.collections.length);
-        return collectionList;
+    constructor(private httpClient: HttpClient) {}
+
+    create(name: string) {
+    
+        var collection = new Collection();
+        collection.name = name;
+    
+        return this.httpClient.post<Collection>(this.BaseUrl, collection);
     }
 
-    read(id :string): Collection {
-        return this.collections.find(x => x.id === id);
-    }
-
-    list(): Collection[] {
-        return this.collections;
+    read(id :string = undefined): any {
+        let params = "";
+        if (id){
+            params = "?id=" + id;
+        }
+        return this.httpClient.get<Collection>(this.BaseUrl + params);
     }
 
     update(collection: Collection) {
-        var existing = this.collections.find(x=>x.id === collection.id);
-        this.collections.splice(this.collections.indexOf(existing), 1);
-        this.collections.push(collection);
-        this.collections.sort((a, b) => a.name.localeCompare(b.name))
     }
 
     delete(id: string) {
-        var existing = this.collections.find(x=>x.id === id);
-        this.collections.splice(this.collections.indexOf(existing), 1);
+        return this.httpClient.delete(this.BaseUrl + "?id=" + id);
     }
 }
 
 export class Collection{
-    constructor(id: string){
-        this.id = id;
-    }
-
     id: string;
     name: string;
 }

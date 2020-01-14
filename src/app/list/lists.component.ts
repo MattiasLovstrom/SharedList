@@ -33,19 +33,34 @@ export class ListsComponent implements OnInit {
             this.collectionId = id;
             var list = this.listService.read(id);
             console.log(list);
+            let s = this.listService.read(id).subscribe(result => {
+                this.lists = result;
+                s.unsubscribe();
+            });
+            
         });
 
-        this.lists = this.listService.list();
-        this.languages = this.languageService.read();
+
+        
+        let subscription = this.languageService.read().subscribe(result => {
+            this.languages = result;
+            subscription.unsubscribe();
+        });
+
         this.languageId = navigator.language;
     }
 
     createList(nameElement: any) {
-        const list = this.listService.create();
+        let list = new List();
         list.name = nameElement.name;
-        list.language = this.languageId;
-        this.listService.update(list);
-        this.router.navigate([`/${this.collectionId}/${list.id}`]);
+        list.languageId = this.languageId;
+        list.listCollectionId = this.collectionId;
+        
+        let s = this.listService.create(list).subscribe(result => {
+            console.log("Create list: ", result);
+            this.router.navigate([`/${result.listCollectionId}/${result.id}`]);
+            s.unsubscribe();
+        });
     }
 
     edit(id: string) {
@@ -53,8 +68,10 @@ export class ListsComponent implements OnInit {
     }
 
     copy(list: List) {
-        const newList = this.listService.create(list);
-        newList.name = list.name;
-        this.router.navigate([`/${this.collectionId}/${newList.id}`]);
+        let s = this.listService.create(list).subscribe(result =>{
+            const newList = result; 
+            this.router.navigate([`/${this.collectionId}/${newList.id}`]);
+            s.unsubscribe();
+        });
     }
 }

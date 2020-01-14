@@ -20,11 +20,6 @@ export class ListComponent implements OnInit{
       private formBuiler: FormBuilder, 
       private router: Router) 
     {
-        this.form = this.formBuiler.group({
-            name: new FormControl(), 
-            category: new FormControl(), 
-            rows: this.formBuiler.array([]),
-          });
     }
 
     ngOnInit(): void {
@@ -34,18 +29,29 @@ export class ListComponent implements OnInit{
                 takeUntil(this.subject.asObservable())
             )
             .subscribe(async id => {
-                var listid = id[0];
-                this.collectionId = id[1];
-                this.list = this.listService.read(listid);
-                this.form.controls.name.setValue(this.list.name);
-                this.form.controls.category.setValue(this.list.category);
-                this.list.rows.forEach(line => {
-                  this.addRow(line);
-                });
-                if (this.list.rows.length == 0)
-                {
-                  for(var i = 0; i < 3; i++) this.addRow('');
-                }
+
+              this.form = this.formBuiler.group({
+                name: new FormControl(), 
+                category: new FormControl(), 
+                rows: this.formBuiler.array([]),
+              });
+    
+              var listid = id[0];
+                var collectionId = id[1];
+                 this.collectionId = collectionId;
+                var s = this.listService.read(collectionId, listid).subscribe(result =>{
+                  this.list = result[0];
+                  this.form.controls.name.setValue(this.list.name);
+                  this.form.controls.category.setValue(this.list.category);
+                  this.list.rows.forEach(line => {
+                    this.addRow(line);
+                  });
+                  if (this.list.rows.length == 0)
+                  {
+                    for(var i = 0; i < 3; i++) this.addRow('');
+                  }
+                  s.unsubscribe();
+                }); 
             });
     }
 
@@ -73,15 +79,16 @@ export class ListComponent implements OnInit{
       this.list.category = category;
       this.list.rows = rows; 
 
-      this.listService.update(this.list);
-
-      this.router.navigate([`/${this.collectionId}`]);
+      this.listService.update(this.list).subscribe(result=>{
+        this.router.navigate([`/${this.collectionId}`]);
+      });
     }
 
     delete() {
-      this.listService.delete(this.list.id);
-
-      this.router.navigate([`/${this.collectionId}`]);
+      let s = this.listService.delete(this.list.id).subscribe(result =>{
+        s.unsubscribe();
+        this.router.navigate([`/${this.collectionId}`]);
+      });
     }
 
 
