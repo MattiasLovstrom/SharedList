@@ -37,8 +37,8 @@ export class ListComponent implements OnInit{
               });
     
               var listid = id[0];
-                var collectionId = id[1];
-                 this.collectionId = collectionId;
+              var collectionId = id[1];
+              this.collectionId = collectionId;
                 var s = this.listService.read(collectionId, listid).subscribe(result =>{
                   this.list = result[0];
                   this.form.controls.name.setValue(this.list.name);
@@ -55,7 +55,7 @@ export class ListComponent implements OnInit{
             });
     }
 
-    addRow(value) {
+    addRow(value:string) {
         const rows = this.form.controls.rows as FormArray;
         rows.push(this.formBuiler.group({
           col1: value
@@ -94,5 +94,9 @@ export class ListComponent implements OnInit{
 
     cancel() {
       this.router.navigate([`/${this.collectionId}`]);
+    }
+
+    getControls(frmGrp: FormGroup, key: string) {
+      return (<FormArray>frmGrp.controls[key]).controls;
     }
 }

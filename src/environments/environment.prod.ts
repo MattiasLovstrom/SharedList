@@ -1,3 +1,4 @@
 export const environment = {
-  production: true
+  production: true,
+  listApiUrl: "/api/0_1/"
 };

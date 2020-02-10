@@ -1,16 +1,20 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../environments/environment';
 
 @Injectable({
     providedIn: "root"
 })
 export class ListService{
-    private readonly BaseUrl = "https://localhost:44388/api/0_1/Lists";
+    private BaseUrl;
 
     lists: List[] = [];
     lastListId: number = 0;
 
-    constructor(private httpClient: HttpClient) {}
+    constructor(
+        private httpClient: HttpClient) {
+            this.BaseUrl = environment.listApiUrl +  "Lists";
+        }
 
     create(list: List): any  {
         return this.httpClient.post<List>(this.BaseUrl, list);

@@ -1,4 +1,4 @@
-<h1>Lists</h1>
+<h1>{{collection?.name}}</h1>
 <form #listForm="ngForm" novalidate (ngSubmit)="createList(listForm.value)">
     <select name="lang" [(ngModel)]="languageId" >
         <option *ngFor="let language of languages" [ngValue]="language.key">{{language.name}}</option>
@@ -9,7 +9,7 @@
 <ul>
     <li *ngFor="let list of lists">
         <a routerLink="/{{collectionId}}/{{list.id}}" routerLinkActive="active">
-            <strong>{{list.name}}</strong> {{list.created.toLocaleString()}}
+            <strong>{{list.name}}</strong> {{ list.created | showAsDate }}
         </a>
         <button title="Copy" (click)="copy(list)" class="fa fa-copy"></button>
         <p *ngFor="let row of list.rows">

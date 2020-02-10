@@ -9,12 +9,12 @@ import { HttpClient } from '@angular/common/http';
         <h2>List collections</h2>
         <form #listCollectionForm="ngForm" novalidate (ngSubmit)="create(listCollectionForm.value)">
             <input type="text" name="name" placeholder="Name of new list collection" ngModel />
-            <button>Create list collection</button>
+            <button  title="Create new list collection" class="fa fa-plus"></button>
         </form>
         <ul>
     <li *ngFor="let collection of collections">
-        <a routerLink="/{{collection.id}}" routerLinkActive="active">{{collection.id}} {{collection.name}}</a>
-        <button (click)="delete(collection.id)">Remove</button>
+        <a routerLink="/{{collection.id}}" routerLinkActive="active">{{collection.name}}</a>&nbsp;&nbsp;&nbsp;
+        <button title="Remove" class="fa fa-times"  (click)="delete(collection.id)"></button>
     </li>
 </ul>
     `

@@ -4,6 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { map, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { LanguageService, Language } from '../services/language.service';
+import { ListCollectionService, Collection } from '../services/list-collection.service';
 
 @Component({
     selector: 'sharedlist-list',
@@ -11,6 +12,7 @@ import { LanguageService, Language } from '../services/language.service';
 })
 export class ListsComponent implements OnInit {
     collectionId: string;
+    collection: Collection;
     lists: List[];
     languages: Language[];
     languageId: string;
@@ -19,7 +21,8 @@ export class ListsComponent implements OnInit {
     
     constructor(
         private listService: ListService,
-        private languageService: LanguageService, 
+        private languageService: LanguageService,
+        private listCollectionService: ListCollectionService, 
         private router: Router,
         private route: ActivatedRoute) {}
 
@@ -31,16 +34,15 @@ export class ListsComponent implements OnInit {
         )
         .subscribe(async id => {
             this.collectionId = id;
-            var list = this.listService.read(id);
-            console.log(list);
             let s = this.listService.read(id).subscribe(result => {
                 this.lists = result;
                 s.unsubscribe();
             });
-            
+            let s1 = this.listCollectionService.read(id).subscribe(result => {
+                this.collection = result[0];
+                s1.unsubscribe();
+            });
         });
-
-
         
         let subscription = this.languageService.read().subscribe(result => {
             this.languages = result;

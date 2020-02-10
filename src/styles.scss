@@ -1,7 +1,17 @@
 /* You can add global styles to this file, and also import other style files */
+@media only screen and (min-width: 600px) {
+    body {
+      padding-left: 3em;
+    }
+  }
+
 button.fa {
     border-color: transparent;
     background-color:transparent;
+}
+
+ul {
+    padding-inline-start: 0px;
 }
 
 li {
