@@ -3,14 +3,19 @@
     body {
       padding-left: 3em;
     }
-  }
+}
+
+body {
+    width: 100%;
+}
 
 button.fa {
     border-color: transparent;
     background-color:transparent;
 }
 
-ul {
+ol {
+    width: 100%;
     padding-inline-start: 0px;
 }
 

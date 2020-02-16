@@ -5,7 +5,7 @@
     <div>
         <div formArrayName="rows" *ngFor="let row of getControls(form, 'rows'); let i = index">
             <div [formGroupName]="i">
-                <input name="col1"  type="text" formControlName="col1" [tabindex]="i + 100"><button title="Remove" class="fa fa-times" (click)="removeRow(i)" [tabindex]="i + 10000"></button>
+                <input name="col1_{{list.category}}_{{list.languageId}}"  type="text" formControlName="col1" [tabindex]="i + 100"><button title="Remove" class="fa fa-times" (click)="removeRow(i)" [tabindex]="i + 10000"></button>
             </div>
         </div>
     </div>

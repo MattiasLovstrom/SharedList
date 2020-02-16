@@ -6,7 +6,7 @@
     <input type="text" name="name" placeholder="Name of new list" ngModel />
     <button title="Create" class="fa fa-plus"></button>
 </form>
-<ul>
+<ol>
     <li *ngFor="let list of lists">
         <a routerLink="/{{collectionId}}/{{list.id}}" routerLinkActive="active">
             <strong>{{list.name}}</strong> {{ list.created | showAsDate }}
@@ -17,5 +17,5 @@
         </p>
     
     </li>
-</ul>
+</ol>
 
