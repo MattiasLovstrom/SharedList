@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormControl, FormArray, FormBuilder } from '@angular/forms';
 import { map, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 
 @Component({
     templateUrl: './list.component.html'
@@ -98,5 +99,12 @@ export class ListComponent implements OnInit{
 
     getControls(frmGrp: FormGroup, key: string) {
       return (<FormArray>frmGrp.controls[key]).controls;
+    }
+
+    drop(event: CdkDragDrop<string[]>) {
+      const rows = this.form.controls.rows as FormArray;
+      const r = rows.value;
+      moveItemInArray(r, event.previousIndex, event.currentIndex);
+      rows.setValue(r);
     }
 }
