@@ -5,6 +5,7 @@ import { FormGroup, FormControl, FormArray, FormBuilder } from '@angular/forms';
 import { map, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
+import { Title } from '@angular/platform-browser';
 
 @Component({
     templateUrl: './list.component.html'
@@ -14,16 +15,19 @@ export class ListComponent implements OnInit{
     form: FormGroup;
     subject: Subject<any> = new Subject<any>();
     collectionId: string;
+    waiting: boolean;
 
     constructor(
       private route: ActivatedRoute, 
       private listService: ListService, 
       private formBuiler: FormBuilder, 
-      private router: Router) 
+      private router: Router, 
+      private titleService: Title) 
     {
     }
 
     ngOnInit(): void {
+      this.waiting = true;
         this.route.paramMap
             .pipe(
                 map(x => [x.get("id"), x.get("listcollection")]),
@@ -43,6 +47,7 @@ export class ListComponent implements OnInit{
                 var s = this.listService.read(collectionId, listid).subscribe(result =>{
                   this.list = result[0];
                   this.form.controls.name.setValue(this.list.name);
+                  this.titleService.setTitle(this.list.name + " - Shared list");
                   this.form.controls.category.setValue(this.list.category);
                   this.list.rows.forEach(line => {
                     this.addRow(line);
@@ -52,6 +57,7 @@ export class ListComponent implements OnInit{
                     for(var i = 0; i < 3; i++) this.addRow('');
                   }
                   s.unsubscribe();
+                  this.waiting = false;
                 }); 
             });
     }
@@ -69,6 +75,7 @@ export class ListComponent implements OnInit{
     }  
 
     save() {
+      this.waiting = true;
       var name = this.form.getRawValue().name;
       var category = this.form.getRawValue().category;
       
@@ -86,12 +93,12 @@ export class ListComponent implements OnInit{
     }
 
     delete() {
+      this.waiting = true;
       let s = this.listService.delete(this.list.id).subscribe(result =>{
         s.unsubscribe();
         this.router.navigate([`/${this.collectionId}`]);
       });
     }
-
 
     cancel() {
       this.router.navigate([`/${this.collectionId}`]);

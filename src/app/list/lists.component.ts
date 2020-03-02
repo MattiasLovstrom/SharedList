@@ -5,6 +5,7 @@ import { map, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { LanguageService, Language } from '../services/language.service';
 import { ListCollectionService, Collection } from '../services/list-collection.service';
+import { Title } from '@angular/platform-browser';
 
 @Component({
     selector: 'sharedlist-list',
@@ -24,7 +25,8 @@ export class ListsComponent implements OnInit {
         private languageService: LanguageService,
         private listCollectionService: ListCollectionService, 
         private router: Router,
-        private route: ActivatedRoute) {}
+        private route: ActivatedRoute, 
+        private titleService: Title) {}
 
     ngOnInit(): void {
         this.route.paramMap
@@ -40,7 +42,9 @@ export class ListsComponent implements OnInit {
             });
             let s1 = this.listCollectionService.read(id).subscribe(result => {
                 this.collection = result[0];
-                s1.unsubscribe();
+                s1.unsubscribe(); 
+                this.titleService.setTitle(this.collection.name + " - Shared list");
+                 
             });
         });
         
@@ -70,6 +74,7 @@ export class ListsComponent implements OnInit {
     }
 
     copy(list: List) {
+        list.created = undefined;
         let s = this.listService.create(list).subscribe(result =>{
             const newList = result; 
             this.router.navigate([`/${this.collectionId}/${newList.id}`]);

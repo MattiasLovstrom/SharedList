@@ -49,8 +49,10 @@ export class ListCollectionsComponent implements OnInit {
     }
 
     delete(id) {
-        let s = this.listCollectionService.delete(id).subscribe(result=>{
-            this.reload();
-        });
+        if(confirm("Are you sure to delete this list collection")) {
+            let s = this.listCollectionService.delete(id).subscribe(result=>{
+                this.reload();
+            });
+        }
     }
 } 
