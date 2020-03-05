@@ -5,8 +5,10 @@ import { AppComponent } from './app.component';
 import { ListsModule } from './list/lists.module';
 import { ListsComponent } from './list/lists.component';
 import { RouterModule, Routes } from '@angular/router';
-import { ListComponent } from './list/list.component';
-import { ListModule } from './list/list.module';
+import { ListEditComponent } from './list/list-edit.component';
+import { ListEditModule } from './list/list-edit.module';
+import { ListViewComponent } from './list/list-view.component';
+import { ListViewModule } from './list/list-view.module';
 import { ListCollectionsModule } from './list/list-collections.module';
 import { ListCollectionsComponent } from './list/list-collections.component';
 
@@ -15,7 +17,8 @@ import { HttpClientModule } from '@angular/common/http';
 const routes: Routes = [
   { path: '', component: ListCollectionsComponent },
   { path: ':listcollection', component: ListsComponent },
-  { path: ':listcollection/:id', component: ListComponent }
+  { path: ':listcollection/:id', component: ListViewComponent },
+  { path: ':listcollection/:id/edit', component: ListEditComponent }
 ]
 
 @NgModule({
@@ -25,7 +28,8 @@ const routes: Routes = [
   imports: [
     BrowserModule,
     ListsModule,
-    ListModule,
+    ListEditModule,
+    ListViewModule,
     RouterModule.forRoot(routes),
     ListCollectionsModule,
     HttpClientModule

@@ -1,0 +1,12 @@
+    <h2>{{list?.name}} ({{list?.category}})</h2>
+    <hr>
+    <ol cdkDropList (cdkDropListDropped)="drop($event)" class="list" >
+        <li cdkDrag *ngFor="let row of list?.rows">
+            {{row}}&nbsp;
+        </li>
+    </ol>
+    <div>
+        <button type="submit" (click)="cancel()" [tabindex]="1010">Cancel</button>
+        <button type="submit" (click)="edit()" [disabled]="this.waiting" [tabindex]="1020">Edit</button>
+        <button type="submit" (click)="delete()" [disabled]="waiting" [tabindex]="1020">Delete</button>
+    </div>

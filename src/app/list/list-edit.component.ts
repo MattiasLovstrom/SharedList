@@ -8,9 +8,9 @@ import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 import { Title } from '@angular/platform-browser';
 
 @Component({
-    templateUrl: './list.component.html'
+    templateUrl: './list-edit.component.html'
 })
-export class ListComponent implements OnInit{
+export class ListEditComponent implements OnInit{
     list: List;
     form: FormGroup;
     subject: Subject<any> = new Subject<any>();
@@ -88,20 +88,13 @@ export class ListComponent implements OnInit{
       this.list.rows = rows; 
 
       this.listService.update(this.list).subscribe(result=>{
-        this.router.navigate([`/${this.collectionId}`]);
+        this.router.navigate([`/${this.collectionId}/${this.list.id}`]);
       });
     }
 
-    delete() {
-      this.waiting = true;
-      let s = this.listService.delete(this.list.id).subscribe(result =>{
-        s.unsubscribe();
-        this.router.navigate([`/${this.collectionId}`]);
-      });
-    }
 
     cancel() {
-      this.router.navigate([`/${this.collectionId}`]);
+      this.router.navigate([`/${this.collectionId}/${this.list.id}`]);
     }
 
     getControls(frmGrp: FormGroup, key: string) {

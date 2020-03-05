@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
-import { ListComponent } from './list.component';
+import { ListEditComponent } from './list-edit.component';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 
 @NgModule ({
@@ -11,7 +11,7 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
         DragDropModule
     ],
     declarations: [
-        ListComponent
+        ListEditComponent
     ]
 })
-export class ListModule {}
+export class ListEditModule {}

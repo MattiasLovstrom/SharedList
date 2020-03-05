@@ -2,8 +2,8 @@
     <input [formControl]="form.controls.name" placeholder="List name" [tabindex]="1">
     <input [formControl]="form.controls.category" placeholder="Category" [tabindex]="10">
     <hr>
-    <div cdkDropList (cdkDropListDropped)="drop($event)" class="list" >
-        <div cdkDrag formArrayName="rows" *ngFor="let row of getControls(form, 'rows'); let i = index">
+    <div class="list" >
+        <div formArrayName="rows" *ngFor="let row of getControls(form, 'rows'); let i = index">
             <div [formGroupName]="i">
                 <input name="col1_{{list.category}}_{{list.languageId}}"  type="text" formControlName="col1" [tabindex]="i + 100">
                 <button title="Remove" class="fa fa-times" (click)="removeRow(i)" [tabindex]="i + 10000"></button>
@@ -14,6 +14,5 @@
         <button title="Add row" type="button" class="fa fa-plus" (click)="addRow('')" [tabindex]="900"></button><br>
         <button type="submit" (click)="save()" [disabled]="waiting" [tabindex]="1000">Save</button>
         <button type="submit" (click)="cancel()" [tabindex]="1010">Cancel</button>
-        <button type="submit" (click)="delete()" [disabled]="waiting" [tabindex]="1020">Delete</button>
     </div>
 </form>
