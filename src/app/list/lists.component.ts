@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ListService, List } from '../services/list.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { map, takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs';
+import { map, takeUntil} from 'rxjs/operators';
+import { Subject} from 'rxjs';
 import { LanguageService, Language } from '../services/language.service';
 import { ListCollectionService, Collection } from '../services/list-collection.service';
 import { Title } from '@angular/platform-browser';
@@ -14,11 +14,13 @@ import { Title } from '@angular/platform-browser';
 export class ListsComponent implements OnInit {
     collectionId: string;
     collection: Collection;
-    lists: List[];
     languages: Language[];
     languageId: string;
     listName: string = null;
     subject: Subject<any> = new Subject<any>();
+    countlists = new Pager(1,10);
+    lists:List[] = [];
+    currentList: List;
     
     constructor(
         private listService: ListService,
@@ -37,14 +39,13 @@ export class ListsComponent implements OnInit {
         .subscribe(async id => {
             this.collectionId = id;
             let s = this.listService.read(id).subscribe(result => {
-                this.lists = result;
+                this.currentList = result[0];
                 s.unsubscribe();
             });
             let s1 = this.listCollectionService.read(id).subscribe(result => {
                 this.collection = result[0];
                 s1.unsubscribe(); 
                 this.titleService.setTitle(this.collection.name + " - Shared list");
-                 
             });
         });
         
@@ -69,6 +70,10 @@ export class ListsComponent implements OnInit {
         });
     }
 
+    addRow(value:string) {
+        
+      }
+    
     edit(id: string) {
         this.router.navigate([`/${this.collectionId}/${id}`]);
     }
@@ -80,5 +85,25 @@ export class ListsComponent implements OnInit {
             this.router.navigate([`/${this.collectionId}/${newList.id}`]);
             s.unsubscribe();
         });
+    }
+
+    readMore() {
+        let subscriber = this.listService.read(this.collectionId, null, this.countlists.skip, this.countlists.take).subscribe(l=>{
+            this.lists = this.lists.concat(l);
+            console.log(this.lists);
+            this.countlists.skip = this.countlists.skip + this.countlists.take;
+        
+            subscriber.unsubscribe();
+        });
+    }
+}
+
+export class Pager{
+    skip: number;
+    take: number;
+
+    constructor(skip: number, take: number){
+        this.skip = skip;
+        this.take = take;
     }
 }

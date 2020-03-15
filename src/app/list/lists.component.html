@@ -6,7 +6,19 @@
     <input type="text" name="name" placeholder="Name of new list" ngModel />
     <button title="Create" class="fa fa-plus"></button>
 </form>
-<ol>
+<div *ngIf="currentList">
+    <a routerLink="/{{collectionId}}/{{currentList.id}}" routerLinkActive="active">
+        <strong>{{currentList.name}}</strong> {{ currentList.created | showAsDate }}
+    </a>
+    <button title="Copy" (click)="copy(currentList)" class="fa fa-copy"></button>
+    <p *ngFor="let row of currentList.rows">
+        {{row}}
+    </p>
+    <!-- <button title="Add row" type="button" class="fa fa-plus" (click)="addRow('')" [tabindex]="900"></button>Add a row<br> -->
+</div>
+
+<div *ngIf="lists">
+    <ol>
     <li *ngFor="let list of lists">
         <a routerLink="/{{collectionId}}/{{list.id}}" routerLinkActive="active">
             <strong>{{list.name}}</strong> {{ list.created | showAsDate }}
@@ -18,4 +30,6 @@
     
     </li>
 </ol>
-
+</div>
+<br/>
+<button (click)=readMore()>Old lists</button>
