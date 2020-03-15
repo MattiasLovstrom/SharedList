@@ -32,4 +32,4 @@
 </ol>
 </div>
 <br/>
-<button (click)=readMore()>Old lists</button>
+<button [disabled]="!countlists.hasMore" (click)=readMore()>Old lists</button>

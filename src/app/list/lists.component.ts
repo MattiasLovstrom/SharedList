@@ -89,10 +89,11 @@ export class ListsComponent implements OnInit {
 
     readMore() {
         let subscriber = this.listService.read(this.collectionId, null, this.countlists.skip, this.countlists.take).subscribe(l=>{
+            var numberOfListsBefore = this.lists.length;
             this.lists = this.lists.concat(l);
             console.log(this.lists);
             this.countlists.skip = this.countlists.skip + this.countlists.take;
-        
+            this.countlists.hasMore = this.lists.length >= numberOfListsBefore + this.countlists.take;
             subscriber.unsubscribe();
         });
     }
@@ -101,9 +102,11 @@ export class ListsComponent implements OnInit {
 export class Pager{
     skip: number;
     take: number;
+    hasMore: boolean;
 
     constructor(skip: number, take: number){
         this.skip = skip;
         this.take = take;
+        this.hasMore = true;
     }
 }
