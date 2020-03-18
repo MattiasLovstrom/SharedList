@@ -5,6 +5,10 @@
     }
 }
 
+h1 {
+    font-size: 15px;
+}
+
 body {
     width: 100%;
 }
@@ -38,8 +42,45 @@ p:nth-child(odd) {
     background-color: lightyellow;
 }
 
-p {
-    margin: 0px;
+.row {
+    margin-top: 1px;
+    border: solid 1px;
+    border-radius: 3px;
+    padding: 5px;
+    width: 210px;
+    overflow: auto;
+    vertical-align: top;
+}
+
+.row input  {
+    float: left;
+    max-width: 10px;
+}
+
+input[type=checkbox] {
+    margin-left: 0px;
+    border-radius: 50%;
+  }
+
+  input[type=checkbox]:checked + label {
+    color:  #ccc;
+    font-style: italic;
+  } 
+
+.row label  {
+    float: left;
+    max-width: 170px;
+    overflow-wrap: break-word;
+}
+
+.row button {
+    text-align: right;
+    float: right;
+    padding-right: 0px;
+}
+
+textarea {
+    width: 205px;
 }
 
 .fa-times{

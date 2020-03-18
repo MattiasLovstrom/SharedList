@@ -6,7 +6,7 @@ import { HttpClient } from '@angular/common/http';
 @Component({
     selector : 'list-collections',
     template: `
-        <h2>List collections</h2>
+        <h1>List collections</h1>
         <form #listCollectionForm="ngForm" novalidate (ngSubmit)="create(listCollectionForm.value)">
             <input type="text" name="name" placeholder="Name of new list collection" ngModel />
             <button  title="Create new list collection" class="fa fa-plus"></button>

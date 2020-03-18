@@ -11,10 +11,13 @@
         <strong>{{currentList.name}}</strong> {{ currentList.created | showAsDate }}
     </a>
     <button title="Copy" (click)="copy(currentList)" class="fa fa-copy"></button>
-    <p *ngFor="let row of currentList.rows">
-        {{row}}
-    </p>
-    <!-- <button title="Add row" type="button" class="fa fa-plus" (click)="addRow('')" [tabindex]="900"></button>Add a row<br> -->
+    <div class="row" *ngFor="let row of currentList.rows; let i = index">
+        <input type="checkbox" id="i" name="ossm"> 
+        <label for="i">{{row}}</label>
+        <button title="Remove" class="fa fa-times" (click)="removeRow(i)" [tabindex]="i + 10000"></button>
+    </div>
+    <button  #addRowButton title="Add row" type="button" class="fa fa-plus" (click)="addRowOnClick(addRowButton, editRow)" [tabindex]="900">Add a row</button><br>
+    <textarea [hidden]="!editing" #editRow (keydown.enter)="addRow(editRow)"></textarea>
 </div>
 
 <div *ngIf="lists">
@@ -24,10 +27,10 @@
             <strong>{{list.name}}</strong> {{ list.created | showAsDate }}
         </a>
         <button title="Copy" (click)="copy(list)" class="fa fa-copy"></button>
-        <p *ngFor="let row of list.rows">
-            {{row}}
-        </p>
-    
+        <div class="row" *ngFor="let row of list.rows">
+            <button title="Add row to current list" type="button" class="fa fa-angle-double-up" (click)="addRowValue(row)"></button>
+            {{row}}<br>
+        </div>
     </li>
 </ol>
 </div>

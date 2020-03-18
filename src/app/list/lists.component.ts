@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ListService, List } from '../services/list.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { map, takeUntil} from 'rxjs/operators';
@@ -21,6 +21,8 @@ export class ListsComponent implements OnInit {
     countlists = new Pager(1,10);
     lists:List[] = [];
     currentList: List;
+    editRow:string = "";
+    editing:boolean = false;
     
     constructor(
         private listService: ListService,
@@ -70,10 +72,51 @@ export class ListsComponent implements OnInit {
         });
     }
 
-    addRow(value:string) {
-        
+    addRowOnClick(addRowButton: HTMLButtonElement, focusOnElement:HTMLTextAreaElement){
+        this.editing = !this.editing;
+        focusOnElement.hidden = !this.editing;
+        focusOnElement.focus();
+    }
+
+    addRow(el:HTMLTextAreaElement) {
+        let s = this.listService.read(this.collectionId, this.currentList.id).subscribe(result => {
+            this.currentList = result[0];
+            this.currentList.rows.push(el.value);
+            el.value = ""
+            let s1 = this.listService.update(this.currentList).subscribe(result=>{
+                s1.unsubscribe();
+              });
+            s.unsubscribe();
+        });
       }
-    
+
+    addRowValue(value: string) {
+        this.editing = false;
+        let s = this.listService.read(this.collectionId, this.currentList.id).subscribe(result => {
+            this.currentList = result[0];
+            this.currentList.rows.push(value);
+            let s1 = this.listService.update(this.currentList).subscribe(result=>{
+                s1.unsubscribe();
+              });
+            s.unsubscribe();
+        });
+      }
+
+    removeRow(i: number) {
+        let s = this.listService.read(this.collectionId, this.currentList.id).subscribe(result => {
+            if (result[0].rows.length >= i && this.currentList.rows [i] === result[0].rows[i]) {
+                result[0].rows.splice(i, 1);
+            
+                let s1 = this.listService.update(result[0]).subscribe(result=>{
+                    this.currentList = result;
+                    s1.unsubscribe();
+                  });
+            }
+            
+            s.unsubscribe();
+        });
+    }
+      
     edit(id: string) {
         this.router.navigate([`/${this.collectionId}/${id}`]);
     }
