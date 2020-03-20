@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ListService, List } from '../services/list.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { map, takeUntil} from 'rxjs/operators';
@@ -6,6 +6,7 @@ import { Subject} from 'rxjs';
 import { LanguageService, Language } from '../services/language.service';
 import { ListCollectionService, Collection } from '../services/list-collection.service';
 import { Title } from '@angular/platform-browser';
+import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 
 @Component({
     selector: 'sharedlist-list',
@@ -40,10 +41,14 @@ export class ListsComponent implements OnInit {
         )
         .subscribe(async id => {
             this.collectionId = id;
+
             let s = this.listService.read(id).subscribe(result => {
                 this.currentList = result[0];
                 s.unsubscribe();
             });
+
+            this.AddListReload(60);
+            
             let s1 = this.listCollectionService.read(id).subscribe(result => {
                 this.collection = result[0];
                 s1.unsubscribe(); 
@@ -57,6 +62,18 @@ export class ListsComponent implements OnInit {
         });
 
         this.languageId = navigator.language;
+    }
+
+    AddListReload(reloadTime: number) {
+        setTimeout(() => {
+            console.log('reload');
+            let s = this.listService.read(this.collectionId).subscribe(result => {
+                this.currentList = result[0];
+                s.unsubscribe();
+                this.AddListReload(reloadTime);
+            });
+        }, reloadTime * 1000); 
+
     }
 
     createList(nameElement: any) {
@@ -116,7 +133,23 @@ export class ListsComponent implements OnInit {
             s.unsubscribe();
         });
     }
-      
+
+    drop(event: CdkDragDrop<string[]>) {
+        let s = this.listService.read(this.collectionId, this.currentList.id).subscribe(result => {
+            var loadedList = result[0];
+            if (this.currentList.rows.length === loadedList.rows.length) {
+                console.log(loadedList, event.previousIndex, event.currentIndex);
+                moveItemInArray(loadedList.rows, event.previousIndex, event.currentIndex);
+                console.log(loadedList);
+                let s1 = this.listService.update(loadedList).subscribe(result=>{
+                    this.currentList = result;
+                    s1.unsubscribe();
+                  });
+            }
+            s.unsubscribe();
+        });
+      }
+    
     edit(id: string) {
         this.router.navigate([`/${this.collectionId}/${id}`]);
     }
@@ -140,6 +173,7 @@ export class ListsComponent implements OnInit {
             subscriber.unsubscribe();
         });
     }
+
 }
 
 export class Pager{

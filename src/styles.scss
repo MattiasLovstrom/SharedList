@@ -10,7 +10,7 @@ h1 {
 }
 
 body {
-    width: 100%;
+    width: 90%;
 }
 
 .homenav {
@@ -47,14 +47,21 @@ p:nth-child(odd) {
     border: solid 1px;
     border-radius: 3px;
     padding: 5px;
-    width: 210px;
+    width: 100%;
     overflow: auto;
     vertical-align: top;
 }
 
+.row i  {
+    color: darkgray;
+    float: left;
+    min-width: 20px;
+    display: inline-block;
+}
 .row input  {
     float: left;
-    max-width: 10px;
+    min-width: 10px;
+    display: inline-block;
 }
 
 input[type=checkbox] {
@@ -66,17 +73,20 @@ input[type=checkbox] {
     color:  #ccc;
     font-style: italic;
   } 
-
+ 
 .row label  {
     float: left;
-    max-width: 170px;
     overflow-wrap: break-word;
+    display: inline-block;
+    max-width: 70%;
 }
 
 .row button {
     text-align: right;
     float: right;
     padding-right: 0px;
+    min-width: 25px;
+    display: inline-block;
 }
 
 textarea {
