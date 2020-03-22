@@ -10,7 +10,17 @@ export class StatusService {
         return this._message;
     }
 
-    set(message: string) {
+    info(message: string) {
+        console.log("Message: " + message);
         this._message = message;
+    }
+
+    error(message: string) {
+        console.log("Error: " + message);
+        this._message = message;
+    }
+
+    clear() {
+        console.log("clear");
     }
 }

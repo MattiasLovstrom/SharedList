@@ -7,6 +7,7 @@ import { LanguageService, Language } from '../services/language.service';
 import { ListCollectionService, Collection } from '../services/list-collection.service';
 import { Title } from '@angular/platform-browser';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
+import { StatusService } from '../services/status.service';
 
 @Component({
     selector: 'sharedlist-list',
@@ -31,7 +32,8 @@ export class ListsComponent implements OnInit {
         private listCollectionService: ListCollectionService, 
         private router: Router,
         private route: ActivatedRoute, 
-        private titleService: Title) {}
+        private titleService: Title, 
+        private status: StatusService) {}
 
     ngOnInit(): void {
         this.route.paramMap
@@ -41,7 +43,7 @@ export class ListsComponent implements OnInit {
         )
         .subscribe(async id => {
             this.collectionId = id;
-
+            
             let s = this.listService.read(id).subscribe(result => {
                 this.currentList = result[0];
                 s.unsubscribe();
@@ -83,7 +85,6 @@ export class ListsComponent implements OnInit {
         list.listCollectionId = this.collectionId;
         
         let s = this.listService.create(list).subscribe(result => {
-            console.log("Create list: ", result);
             this.router.navigate([`/${result.listCollectionId}/${result.id}`]);
             s.unsubscribe();
         });
@@ -96,11 +97,14 @@ export class ListsComponent implements OnInit {
     }
 
     addRow(el:HTMLTextAreaElement) {
+        var value = el.value;
+        el.value = ""           
+        this.currentList.rows.push(value);
         let s = this.listService.read(this.collectionId, this.currentList.id).subscribe(result => {
-            this.currentList = result[0];
-            this.currentList.rows.push(el.value);
-            el.value = ""
-            let s1 = this.listService.update(this.currentList).subscribe(result=>{
+            var newList = result[0];
+            newList.rows.push(value);
+            let s1 = this.listService.update(newList).subscribe(result=>{
+                this.currentList = result;
                 s1.unsubscribe();
               });
             s.unsubscribe();
@@ -135,6 +139,8 @@ export class ListsComponent implements OnInit {
     }
 
     drop(event: CdkDragDrop<string[]>) {
+        moveItemInArray(this.currentList.rows, event.previousIndex, event.currentIndex);
+                
         let s = this.listService.read(this.collectionId, this.currentList.id).subscribe(result => {
             var loadedList = result[0];
             if (this.currentList.rows.length === loadedList.rows.length) {
@@ -173,7 +179,6 @@ export class ListsComponent implements OnInit {
             subscriber.unsubscribe();
         });
     }
-
 }
 
 export class Pager{
