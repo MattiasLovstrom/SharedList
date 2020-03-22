@@ -104,3 +104,17 @@ textarea {
 .fa-check {
     color: green;
 }
+
+.info-message {
+    position: fixed;
+    top:0;
+    background-color: lightgreen;
+    color: white;
+}
+
+.error-message {
+    position: fixed;
+    top:0;
+    background-color: red;
+    color: black;
+}

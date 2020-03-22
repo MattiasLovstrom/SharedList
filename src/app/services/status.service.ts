@@ -4,23 +4,22 @@ import { Injectable } from '@angular/core';
     providedIn: "root"
 })
 export class StatusService {
-    private _message: string = "";
-
-    get(): string {
-        return this._message;
-    }
+    public infoMessage: string = "";
+    public errorMessage: string = ""
 
     info(message: string) {
         console.log("Message: " + message);
-        this._message = message;
+        this.infoMessage = message;
     }
 
     error(message: string) {
         console.log("Error: " + message);
-        this._message = message;
+        this.errorMessage = message;
     }
 
     clear() {
         console.log("clear");
+        this.infoMessage = "";
+        this.errorMessage = "";
     }
 }

@@ -22,7 +22,7 @@ export class ListService{
         }
 
     create(list: List): any  {
-        this.status.info("Creating list...");
+        this.status.info("Cute little kittens trying to build you new list…");
         return this.httpClient.post<List>(this.BaseUrl, list)
             .pipe(
                 map(x=>{
@@ -31,14 +31,14 @@ export class ListService{
                 }),
                 retry(1), 
                 catchError((error: HttpErrorResponse) => {
-                    this.status.error("Problem creating list...");
+                    this.status.error("None of the cute little kittens was able to create your new list…");
                     return throwError(error);
                 })
         );
     }
 
     read(listCollectionId:string, id :string = undefined, skip: number = 0, take: number = 10): Observable<List> {
-        this.status.info("Loading list...");
+        this.status.info("A cute kitten stands in line to get your lists…");
         let params = "?listCollectionId=" + listCollectionId;
         params = params + "&skip=" + skip;
         params = params + "&take=" + take;
@@ -54,14 +54,14 @@ export class ListService{
                 }),
                 retry(1), 
                 catchError((error: HttpErrorResponse) => {
-                    this.status.error("Problem loading list...");
+                    this.status.error("The cute little kitten, did something else then get you lists…");
                     return throwError(error);
                 })
             );
     }
 
     update(list: List) {
-        this.status.info("Update list...");
+        this.status.info("A cute little kitten was sent to update your list…");
         return this.httpClient.put<List>(this.BaseUrl, list)
             .pipe(
                 map(x=>{
@@ -70,14 +70,14 @@ export class ListService{
                 }),
                 retry(1), 
                 catchError((error: HttpErrorResponse) => {
-                    this.status.info("Problem update list...");
+                    this.status.info("The cute little kitten doesn’t want to update your list right now…");
                     return throwError(error);
                 })
             );
     }
 
     delete(id: string) {
-        this.status.info("Delete list...");
+        this.status.info("A lot of cute little kittens are dragging away your list…");
         return this.httpClient.delete<List>(this.BaseUrl + "?id=" + id)
         .pipe(
             map(x=>{
@@ -86,7 +86,7 @@ export class ListService{
             }),
             retry(1), 
             catchError((error: HttpErrorResponse) => {
-                this.status.error("Problem deleting list...");
+                this.status.error("None of the cute little kittens where able to remove anything of your list… ");
                 return throwError(error);
             })
         );
