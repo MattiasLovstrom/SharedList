@@ -37,7 +37,8 @@ export class ListEditComponent implements OnInit{
 
               this.form = this.formBuiler.group({
                 name: new FormControl(), 
-                category: new FormControl(), 
+                category: new FormControl(),
+                time: new FormControl(), 
                 rows: this.formBuiler.array([]),
               });
     
@@ -49,6 +50,7 @@ export class ListEditComponent implements OnInit{
                   this.form.controls.name.setValue(this.list.name);
                   this.titleService.setTitle(this.list.name + " - Shared list");
                   this.form.controls.category.setValue(this.list.category);
+                  this.form.controls.time.setValue(this.list.created);
                   this.list.rows.forEach(line => {
                     this.addRow(line);
                   });
@@ -78,6 +80,7 @@ export class ListEditComponent implements OnInit{
       this.waiting = true;
       var name = this.form.getRawValue().name;
       var category = this.form.getRawValue().category;
+      var time = this.form.getRawValue().time;
       
       var rowsArray = this.form.getRawValue().rows;
       var rows = [];
@@ -85,6 +88,7 @@ export class ListEditComponent implements OnInit{
       
       this.list.name = name;
       this.list.category = category;
+      this.list.created = time;
       this.list.rows = rows; 
 
       this.listService.update(this.list).subscribe(result=>{
