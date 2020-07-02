@@ -1,5 +1,5 @@
 import { Component, OnInit, } from '@angular/core';
-import { ListService, List } from '../services/list.service';
+import { ListService, List, Row } from '../services/list.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormControl, FormArray, FormBuilder } from '@angular/forms';
 import { map, takeUntil } from 'rxjs/operators';
@@ -52,7 +52,7 @@ export class ListEditComponent implements OnInit{
                   this.form.controls.category.setValue(this.list.category);
                   this.form.controls.time.setValue(this.list.created);
                   this.list.rows.forEach(line => {
-                    this.addRow(line);
+                    this.addRow(line.text);
                   });
                   if (this.list.rows.length == 0)
                   {
@@ -84,7 +84,7 @@ export class ListEditComponent implements OnInit{
       
       var rowsArray = this.form.getRawValue().rows;
       var rows = [];
-      rowsArray.forEach(x=>rows.push(x.col1));
+      rowsArray.forEach(x=>rows.push(new Row(x.col1)));
       
       this.list.name = name;
       this.list.category = category;

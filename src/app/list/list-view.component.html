@@ -2,7 +2,7 @@
     <hr>
     <ol cdkDropList (cdkDropListDropped)="drop($event)" class="list" >
         <li cdkDrag *ngFor="let row of list?.rows">
-            {{row}}&nbsp;
+            {{row.text}}&nbsp;
         </li>
     </ol>
     <div>

@@ -98,7 +98,15 @@ export class List{
     created: Date;
     name: string;
     category: string;
-    rows: string[] = [];
+    rows: Row[] = [];
     languageId: string;
     listCollectionId: string;
+}
+
+export class Row{
+    constructor(text: string){
+        this.text = text;
+    }
+
+    text: string;
 }

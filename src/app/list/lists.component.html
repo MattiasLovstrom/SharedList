@@ -14,7 +14,7 @@
     <div class="row" *ngFor="let row of currentList.rows; let i = index">
         <i cdkDrag  cdkDragLockAxis="y" class="fa fa-arrows"></i>
         <input type="checkbox" id="i" name="ossm"> 
-        <label  for="i">{{row}}</label>
+        <label  for="i">{{row.text}}</label>
         <button title="Remove" class="fa fa-times" (click)="removeRow(i)" [tabindex]="i + 10000"></button>
     </div>
     <button  #addRowButton title="Add row" type="button" class="fa fa-plus" (click)="addRowOnClick(addRowButton, editRow)" [tabindex]="900">Add a row</button><br>
@@ -30,7 +30,7 @@
         <button title="Copy" (click)="copy(list)" class="fa fa-copy"></button>
         <div class="row" *ngFor="let row of list.rows">
             <button title="Add row to current list" type="button" class="fa fa-angle-double-up" (click)="addRowValue(row)"></button>
-            {{row}}<br>
+            {{row.text}}<br>
         </div>
     </li>
 </ol>

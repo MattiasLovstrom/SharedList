@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ListService, List } from '../services/list.service';
+import { ListService, List, Row } from '../services/list.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { map, takeUntil} from 'rxjs/operators';
 import { Subject} from 'rxjs';
@@ -99,10 +99,10 @@ export class ListsComponent implements OnInit {
     addRow(el:HTMLTextAreaElement) {
         var value = el.value;
         el.value = ""           
-        this.currentList.rows.push(value);
+        this.currentList.rows.push(new Row(value));
         let s = this.listService.read(this.collectionId, this.currentList.id).subscribe(result => {
             var newList = result[0];
-            newList.rows.push(value);
+            newList.rows.push(new Row(value));
             let s1 = this.listService.update(newList).subscribe(result=>{
                 this.currentList = result;
                 s1.unsubscribe();
@@ -115,7 +115,7 @@ export class ListsComponent implements OnInit {
         this.editing = false;
         let s = this.listService.read(this.collectionId, this.currentList.id).subscribe(result => {
             this.currentList = result[0];
-            this.currentList.rows.push(value);
+            this.currentList.rows.push(new Row(value));
             let s1 = this.listService.update(this.currentList).subscribe(result=>{
                 s1.unsubscribe();
               });
@@ -125,7 +125,7 @@ export class ListsComponent implements OnInit {
 
     removeRow(i: number) {
         let s = this.listService.read(this.collectionId, this.currentList.id).subscribe(result => {
-            if (result[0].rows.length >= i && this.currentList.rows [i] === result[0].rows[i]) {
+            if (result[0].rows.length >= i && this.currentList.rows[i].text === result[0].rows[i].text) {
                 result[0].rows.splice(i, 1);
             
                 let s1 = this.listService.update(result[0]).subscribe(result=>{
