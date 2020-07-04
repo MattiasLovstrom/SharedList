@@ -105,9 +105,25 @@ export class List{
 
 export class Row{
     constructor(text: string){
-        this.text = text;
+        this.columns = [ 
+            new Column("checked", 0, "false", "boolean"),
+            new Column("text", 1, text, "text")
+        ];
     }
 
-    text: string;
-    checked: boolean;
+    columns: Column[] = [];
+}
+
+export class Column{
+    constructor(id:string, index: number, content:string, type:string){
+        this.id = id;
+        this.index = index;
+        this.content = content;
+        this.type = type;
+    }
+
+    id: string;
+    index: number;
+    content: string;
+    type: string; 
 }

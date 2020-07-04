@@ -13,8 +13,8 @@
     <button title="Copy" (click)="copy(currentList)" class="fa fa-copy"></button>
     <div class="row" *ngFor="let row of currentList.rows; let i = index">
         <i cdkDrag  cdkDragLockAxis="y" class="fa fa-arrows"></i>
-        <input type="checkbox" id="i" name="ossm" [checked]="row.checked" (click)="toggleRow(i)"> 
-        <label  for="i">{{row.text}}</label>
+        <input type="checkbox" id="i" name="ossm" [checked]="row.columns[0].content == 'true'" (click)="toggleRow(i)"> 
+        <label  for="i">{{row.columns[1].content}}</label>
         <button title="Remove" class="fa fa-times" (click)="removeRow(i)" [tabindex]="i + 10000"></button>
     </div>
     <button  #addRowButton title="Add row" type="button" class="fa fa-plus" (click)="addRowOnClick(addRowButton, editRow)" [tabindex]="900">Add a row</button><br>
@@ -29,8 +29,8 @@
         </a>
         <button title="Copy" (click)="copy(list)" class="fa fa-copy"></button>
         <div class="row" *ngFor="let row of list.rows">
-            <button title="Add row to current list" type="button" class="fa fa-angle-double-up" (click)="addRowValue(row.text)"></button>
-            {{row.text}}<br>
+            <button title="Add row to current list" type="button" class="fa fa-angle-double-up" (click)="addRowValue(row.columns[1].content)"></button>
+            {{row.columns[1].content}}<br>
         </div>
     </li>
 </ol>

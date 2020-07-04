@@ -76,7 +76,6 @@ export class ListsComponent implements OnInit {
                 this.AddListReload(reloadTime);
             });
         }, reloadTime * 1000); 
-
     }
 
     createList(nameElement: any) {
@@ -126,8 +125,8 @@ export class ListsComponent implements OnInit {
 
       toggleRow(i: number) {
         let s = this.listService.read(this.collectionId, this.currentList.id).subscribe(result => {
-            if (result[0].rows.length >= i && this.currentList.rows[i].text === result[0].rows[i].text) {
-                result[0].rows[i].checked = !result[0].rows[i].checked;
+            if (result[0].rows.length >= i && this.currentList.rows[i].columns[1].content === result[0].rows[i].columns[1].content) {
+                result[0].rows[i].columns[0].content = !(result[0].rows[i].columns[0].content == 'true');
             
                 let s1 = this.listService.update(result[0]).subscribe(result=>{
                     this.currentList = result;
@@ -141,7 +140,7 @@ export class ListsComponent implements OnInit {
 
     removeRow(i: number) {
         let s = this.listService.read(this.collectionId, this.currentList.id).subscribe(result => {
-            if (result[0].rows.length >= i && this.currentList.rows[i].text === result[0].rows[i].text) {
+            if (result[0].rows.length >= i && this.currentList.rows[i].columns[1].content === result[0].rows[i].columns[1].content) {
                 result[0].rows.splice(i, 1);
             
                 let s1 = this.listService.update(result[0]).subscribe(result=>{

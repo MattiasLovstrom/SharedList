@@ -52,12 +52,8 @@ export class ListEditComponent implements OnInit{
                   this.form.controls.category.setValue(this.list.category);
                   this.form.controls.time.setValue(this.list.created);
                   this.list.rows.forEach(line => {
-                    this.addRow(line.text);
+                    this.addRow(line.columns[1].content);
                   });
-                  if (this.list.rows.length == 0)
-                  {
-                    for(var i = 0; i < 3; i++) this.addRow('');
-                  }
                   s.unsubscribe();
                   this.waiting = false;
                 }); 
