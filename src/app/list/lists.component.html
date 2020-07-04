@@ -3,7 +3,7 @@
     <select name="lang" [(ngModel)]="languageId" >
         <option *ngFor="let language of languages" [ngValue]="language.key">{{language.name}}</option>
     </select>
-    <input type="text" name="name" placeholder="Name of new list" ngModel [value]="collection?.name"/>
+    <input type="text" name="name" placeholder="Name of new list" [(ngModel)]="listName"/>
     <button title="Create" class="fa fa-plus"></button>
 </form>
 <div *ngIf="currentList" cdkDropList (cdkDropListDropped)="drop($event)" >

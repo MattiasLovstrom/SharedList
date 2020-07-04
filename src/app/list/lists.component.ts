@@ -55,6 +55,7 @@ export class ListsComponent implements OnInit {
                 this.collection = result[0];
                 s1.unsubscribe(); 
                 this.titleService.setTitle(this.collection.name + " - Shared list");
+                this.listName = this.collection.name;
             });
         });
         
@@ -80,7 +81,7 @@ export class ListsComponent implements OnInit {
 
     createList(nameElement: any) {
         let list = new List();
-        list.name = nameElement.name;
+        list.name = this.listName;
         list.languageId = this.languageId;
         list.listCollectionId = this.collectionId;
         
