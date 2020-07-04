@@ -6,7 +6,7 @@
 }
 
 h1 {
-    font-size: 15px;
+    font-size: 25px;
 }
 
 body {
@@ -33,6 +33,10 @@ a:visited {
 
 .list {
     width: 205px;
+}
+
+button.add-row {
+    display: block;
 }
 
 button.fa {
@@ -79,12 +83,12 @@ p:nth-child(odd) {
 input[type=checkbox] {
     margin-left: 0px;
     border-radius: 50%;
-  }
+}
 
-  input[type=checkbox]:checked + label {
+input[type=checkbox]:checked + label {
     color:  #ccc;
     font-style: italic;
-  } 
+} 
  
 .row label  {
     float: left;
