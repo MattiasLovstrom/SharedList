@@ -109,4 +109,5 @@ export class Row{
     }
 
     text: string;
+    checked: boolean;
 }

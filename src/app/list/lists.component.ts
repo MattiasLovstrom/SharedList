@@ -123,6 +123,21 @@ export class ListsComponent implements OnInit {
         });
       }
 
+      toggleRow(i: number) {
+        let s = this.listService.read(this.collectionId, this.currentList.id).subscribe(result => {
+            if (result[0].rows.length >= i && this.currentList.rows[i].text === result[0].rows[i].text) {
+                result[0].rows[i].checked = !result[0].rows[i].checked;
+            
+                let s1 = this.listService.update(result[0]).subscribe(result=>{
+                    this.currentList = result;
+                    s1.unsubscribe();
+                  });
+            }
+            
+            s.unsubscribe();
+        });
+    }
+
     removeRow(i: number) {
         let s = this.listService.read(this.collectionId, this.currentList.id).subscribe(result => {
             if (result[0].rows.length >= i && this.currentList.rows[i].text === result[0].rows[i].text) {
