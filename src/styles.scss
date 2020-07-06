@@ -7,6 +7,26 @@
 
 h1 {
     font-size: 25px;
+    display: inline-block;
+    margin: 0;
+}
+
+header {
+    margin-bottom: 10px;
+}
+
+header form{
+    float: right;
+    display: inline-block;
+}
+
+header form input{
+    display: none;
+}
+
+
+header button{
+    float: right;
 }
 
 body {

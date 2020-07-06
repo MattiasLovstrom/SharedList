@@ -1,11 +1,10 @@
-<h1>{{collection?.name}}</h1>
-<form #listForm="ngForm" novalidate (ngSubmit)="createList(listForm.value)">
-    <select name="lang" [(ngModel)]="languageId" >
-        <option *ngFor="let language of languages" [ngValue]="language.key">{{language.name}}</option>
-    </select>
-    <input type="text" name="name" placeholder="Name of new list" [(ngModel)]="listName"/>
-    <button title="Create" class="fa fa-plus"></button>
-</form>
+<header>
+    <h1>{{collection?.name}}</h1>
+    <form #listForm="ngForm" novalidate (ngSubmit)="createList(listForm.value)">
+        <input type="text" name="name" placeholder="Name of new list" [(ngModel)]="listName"/>
+        <button title="Create" class="fa fa-plus"></button>
+    </form>
+</header>
 <div *ngIf="currentList" cdkDropList (cdkDropListDropped)="drop($event)" >
     <a routerLink="/{{collectionId}}/{{currentList.id}}" routerLinkActive="active">
         <strong>{{currentList.name}}</strong> {{ currentList.created | showAsDate }}
