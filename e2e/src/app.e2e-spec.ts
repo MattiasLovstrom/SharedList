@@ -1,7 +1,7 @@
 import { AppPage } from './app.po';
 import { browser, logging } from 'protractor';
 
-describe('workspace-project App', () => {
+describe('Existing list collections', () => {
   let page: AppPage;
 
   beforeEach(() => {
@@ -10,7 +10,20 @@ describe('workspace-project App', () => {
 
   it('should display welcome message', () => {
     page.navigateTo();
-    expect(page.getTitleText()).toEqual('sharedlist app is running!');
+    expect(page.getTitleText()).toEqual('List collections');
+  });
+
+  it('should exists lists', () => {
+    expect(page.getListsCount()).toBeGreaterThan(3);
+  });
+
+  it('should exists lists', () => {
+    expect(page.getListsCount()).toBeGreaterThan(3);
+  });
+
+  it('should be possible to navigate to first list', () => {
+    page.clickLastOfLists();
+    browser.wait(page.urlChanged, 500);
   });
 
   afterEach(async () => {

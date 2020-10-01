@@ -2,7 +2,7 @@
     <h1>{{collection?.name}}</h1>
     <form #listForm="ngForm" novalidate (ngSubmit)="createList(listForm.value)">
         <input type="text" name="name" placeholder="Name of new list" [(ngModel)]="listName"/>
-        <button title="Create" class="fa fa-plus"></button>
+        <button id="create-list" title="Create" class="fa fa-plus"></button>
     </form>
 </header>
 <div *ngIf="currentList" cdkDropList (cdkDropListDropped)="drop($event)" >
@@ -12,11 +12,10 @@
     <button title="Copy" (click)="copy(currentList)" class="fa fa-copy"></button>
     <div class="row" *ngFor="let row of currentList.rows; let i = index">
         <i cdkDrag  cdkDragLockAxis="y" class="fa fa-arrows"></i>
-        <input type="checkbox" id="i" name="ossm" [checked]="row.columns[0].content == 'true'" (click)="toggleRow(i)"> 
-        <label>{{row.columns[1].content}}</label>
+        <row [row]="row" (changed)="onChanged($event)"></row>
         <button title="Remove" class="fa fa-times" (click)="removeRow(i)" [tabindex]="i + 10000"></button>
     </div>
-    <button  #addRowButton title="Add row" type="button" class="add-row fa fa-plus" (click)="addRowOnClick(addRowButton, editRow)" [tabindex]="900">Add a row</button>
+    <button id="add-row"  #addRowButton title="Add row" type="button" class="add-row fa fa-plus" (click)="addRowOnClick(addRowButton, editRow)" [tabindex]="900">Add a row</button>
     <textarea class="row" [hidden]="!editing" #editRow (keydown.enter)="addRow(editRow)"></textarea>
 </div>
 
@@ -29,10 +28,13 @@
         <button title="Copy" (click)="copy(list)" class="fa fa-copy"></button>
         <div class="row" *ngFor="let row of list.rows">
             <button title="Add row to current list" type="button" class="fa fa-angle-double-up" (click)="addRowValue(row.columns[1].content)"></button>
-            {{row.columns[1].content}}<br>
+            <ng-container *ngFor="let column of row.columns">
+                <label *ngIf="column.type=='text'">{{row.columns[1].content}}</label>
+            </ng-container>
+            <br>
         </div>
     </li>
 </ol>
 </div>
 <br/>
-<button [disabled]="!countlists.hasMore" (click)=readMore()>Old lists</button>
+<button id="more" [disabled]="!countlists.hasMore" (click)=readMore()>Old lists</button>

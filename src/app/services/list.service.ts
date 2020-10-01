@@ -50,7 +50,7 @@ export class ListService{
             .pipe(
                 map(x=>{
                     this.status.clear();
-                    return x;
+                    return x; // Object.assign(new List(), x);
                 }),
                 retry(1), 
                 catchError((error: HttpErrorResponse) => {
@@ -101,22 +101,34 @@ export class List{
     rows: Row[] = [];
     languageId: string;
     listCollectionId: string;
+
+    update(row: Row) {
+        this.rows.forEach(r=>{
+            if (r.id === row.id) {
+                r.columns = row.columns;
+            }
+        })
+        console.log("updating", this);
+    }
 }
 
 export class Row{
     constructor(text: string){
+        this.id = newGuid();
+
         this.columns = [ 
             new Column("checked", 0, "false", "boolean"),
             new Column("text", 1, text, "text")
         ];
     }
-
+    id: string;
+    
     columns: Column[] = [];
 }
 
 export class Column{
     constructor(id:string, index: number, content:string, type:string){
-        this.id = id;
+        this.id = newGuid();
         this.index = index;
         this.content = content;
         this.type = type;
@@ -124,6 +136,15 @@ export class Column{
 
     id: string;
     index: number;
-    content: string;
-    type: string; 
+    content: any;
+    type: string;
+    
+ 
 }
+
+function newGuid() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+      var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+      return v.toString(16);
+    });
+  }

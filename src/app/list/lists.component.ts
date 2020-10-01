@@ -123,17 +123,16 @@ export class ListsComponent implements OnInit {
         });
       }
 
-      toggleRow(i: number) {
+    onChanged(row: Row) {
         let s = this.listService.read(this.collectionId, this.currentList.id).subscribe(result => {
-            if (result[0].rows.length >= i && this.currentList.rows[i].columns[1].content === result[0].rows[i].columns[1].content) {
-                result[0].rows[i].columns[0].content = !(result[0].rows[i].columns[0].content == 'true');
-            
-                let s1 = this.listService.update(result[0]).subscribe(result=>{
-                    this.currentList = result;
-                    s1.unsubscribe();
-                  });
-            }
-            
+            result[0] = Object.assign(new List(), result[0])
+            result[0].update(row);
+
+            let s1 = this.listService.update(result[0]).subscribe(result=>{
+                this.currentList = result;
+                s1.unsubscribe();
+            });
+                    
             s.unsubscribe();
         });
     }

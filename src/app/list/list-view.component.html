@@ -6,7 +6,7 @@
         </li>
     </ol>
     <div>
-        <button type="submit" (click)="cancel()" [tabindex]="1010">Cancel</button>
+        <button id="cancel" type="submit" (click)="cancel()" [tabindex]="1010">Cancel</button>
         <button type="submit" (click)="edit()" [disabled]="this.waiting" [tabindex]="1020">Edit</button>
-        <button type="submit" (click)="delete()" [disabled]="waiting" [tabindex]="1020">Delete</button>
+        <button id="delete" type="submit" (click)="delete()" [disabled]="waiting" [tabindex]="1020">Delete</button>
     </div>
