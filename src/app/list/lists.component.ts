@@ -25,7 +25,10 @@ export class ListsComponent implements OnInit {
     currentList: List;
     editRow:string = "";
     editing:boolean = false;
-    
+    editingRow: number = -1;
+    editStatus: EditStatus = EditStatus.Load;
+    lastUpdate: number = Date.now();
+
     constructor(
         private listService: ListService,
         private languageService: LanguageService,
@@ -49,7 +52,7 @@ export class ListsComponent implements OnInit {
                 s.unsubscribe();
             });
 
-            this.AddListReload(60);
+            this.AddListSync(1);
             
             let s1 = this.listCollectionService.read(id).subscribe(result => {
                 this.collection = result[0];
@@ -67,18 +70,36 @@ export class ListsComponent implements OnInit {
         this.languageId = navigator.language;
     }
 
-    AddListReload(reloadTime: number) {
+    AddListSync(reloadTime: number) {
         setTimeout(() => {
-            console.log('reload');
-            let s = this.listService.read(this.collectionId).subscribe(result => {
-                this.currentList = result[0];
-                s.unsubscribe();
-                this.AddListReload(reloadTime);
-            });
+            this.listSync();
+            this.AddListSync(reloadTime);
         }, reloadTime * 1000); 
     }
 
-    createList(nameElement: any) {
+    listSync() {
+        if (this.editStatus == EditStatus.Save)
+            {
+                let s1 = this.listService.update(this.currentList).subscribe(result=>{
+                    this.currentList = result;
+                    this.editStatus = EditStatus.Load;
+                    s1.unsubscribe();
+              });
+            } else if (this.editStatus == EditStatus.Load)
+            {
+                if ((Date.now() - this.lastUpdate) > 60000)
+                {
+                    this.lastUpdate = Date.now();
+                    console.log('reload');
+                    let s = this.listService.read(this.collectionId).subscribe(result => {
+                        this.currentList = result[0];
+                        s.unsubscribe();
+                    });    
+                }
+            }
+    }
+
+    createList() {
         let list = new List();
         list.name = this.listName;
         list.languageId = this.languageId;
@@ -90,85 +111,41 @@ export class ListsComponent implements OnInit {
         });
     }
 
-    addRowOnClick(addRowButton: HTMLButtonElement, focusOnElement:HTMLTextAreaElement){
-        this.editing = !this.editing;
-        focusOnElement.hidden = !this.editing;
-        focusOnElement.focus();
+    addRowOnClick(){
+        var currentStatus = this.editStatus
+        this.editStatus = EditStatus.None;
+            
+        var row = this.listCollectionService.NewRow(this.collection.type);
+        this.currentList.rows.push(row);
+        this.editingRow = this.currentList.rows.length - 1;
+
+        this.editStatus = currentStatus;
     }
 
-    addRow(el:HTMLTextAreaElement) {
-        var value = el.value;
-        el.value = ""           
-        this.currentList.rows.push(new Row(value));
-        let s = this.listService.read(this.collectionId, this.currentList.id).subscribe(result => {
-            var newList = result[0];
-            newList.rows.push(new Row(value));
-            let s1 = this.listService.update(newList).subscribe(result=>{
-                this.currentList = result;
-                s1.unsubscribe();
-              });
-            s.unsubscribe();
-        });
-      }
-
-    addRowValue(value: string) {
-        this.editing = false;
-        let s = this.listService.read(this.collectionId, this.currentList.id).subscribe(result => {
-            this.currentList = result[0];
-            this.currentList.rows.push(new Row(value));
-            let s1 = this.listService.update(this.currentList).subscribe(result=>{
-                s1.unsubscribe();
-              });
-            s.unsubscribe();
-        });
-      }
-
-    onChanged(row: Row) {
-        let s = this.listService.read(this.collectionId, this.currentList.id).subscribe(result => {
-            result[0] = Object.assign(new List(), result[0])
-            result[0].update(row);
-
-            let s1 = this.listService.update(result[0]).subscribe(result=>{
-                this.currentList = result;
-                s1.unsubscribe();
-            });
-                    
-            s.unsubscribe();
-        });
+    onChanged(command: EditCommand) {
+        if (command.command == Command.Update){
+            this.editStatus = EditStatus.Save;
+        } else if (command.command == Command.Create)
+        {
+            this.addRowOnClick();
+        }        
     }
 
     removeRow(i: number) {
-        let s = this.listService.read(this.collectionId, this.currentList.id).subscribe(result => {
-            if (result[0].rows.length >= i && this.currentList.rows[i].columns[1].content === result[0].rows[i].columns[1].content) {
-                result[0].rows.splice(i, 1);
-            
-                let s1 = this.listService.update(result[0]).subscribe(result=>{
-                    this.currentList = result;
-                    s1.unsubscribe();
-                  });
-            }
-            
-            s.unsubscribe();
-        });
+        this.editStatus = EditStatus.None;
+        this.currentList.rows.splice(i, 1);
+        this.editStatus = EditStatus.Save;
     }
+
+    copyRow(value: Row) {
+        this.currentList.rows.push(value);
+        this.editStatus = EditStatus.Save;
+      }
 
     drop(event: CdkDragDrop<string[]>) {
         moveItemInArray(this.currentList.rows, event.previousIndex, event.currentIndex);
-                
-        let s = this.listService.read(this.collectionId, this.currentList.id).subscribe(result => {
-            var loadedList = result[0];
-            if (this.currentList.rows.length === loadedList.rows.length) {
-                console.log(loadedList, event.previousIndex, event.currentIndex);
-                moveItemInArray(loadedList.rows, event.previousIndex, event.currentIndex);
-                console.log(loadedList);
-                let s1 = this.listService.update(loadedList).subscribe(result=>{
-                    this.currentList = result;
-                    s1.unsubscribe();
-                  });
-            }
-            s.unsubscribe();
-        });
-      }
+        this.editStatus = EditStatus.Save;
+    }
     
     edit(id: string) {
         this.router.navigate([`/${this.collectionId}/${id}`]);
@@ -193,6 +170,28 @@ export class ListsComponent implements OnInit {
             subscriber.unsubscribe();
         });
     }
+}
+
+export class EditCommand {
+    row:Row;
+    command: Command;
+    
+    constructor(command: Command, row: Row) {
+        this.command = command;
+        this.row = row;
+    }
+} 
+
+export enum Command {
+    Create,
+    Update, 
+    Delete 
+}
+
+enum EditStatus {
+    None,
+    Save,
+    Load
 }
 
 export class Pager{

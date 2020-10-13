@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ListCollectionService, Collection } from '../services/list-collection.service';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { ListType, ListTypeService } from '../services/list-type.service';
 
 @Component({
     selector : 'list-collections',
@@ -9,6 +10,9 @@ import { HttpClient } from '@angular/common/http';
         <h1>List collections</h1>
         <form #listCollectionForm="ngForm" novalidate (ngSubmit)="create(listCollectionForm.value)">
             <input type="text" name="name" placeholder="Name of new list collection" ngModel />
+            <select id="selectType" name="listtype" ngModel>
+                <option *ngFor="let x of types" [ngValue]="x.id">{{x.name}}</option>
+            </select>
             <button  title="Create new list collection" class="fa fa-plus"></button>
         </form>
         <ol>
@@ -22,13 +26,19 @@ import { HttpClient } from '@angular/common/http';
 export class ListCollectionsComponent implements OnInit {
     
     collections: Collection[] = [];
+    types: ListType[] = [];
     
     constructor(
-        private listCollectionService: ListCollectionService, 
+        private listCollectionService: ListCollectionService,
+        private listTypesService: ListTypeService, 
         private router: Router) {
     }
 
     ngOnInit(): void {
+        let s = this.listTypesService.read().subscribe(result =>{
+            this.types = result;
+            s.unsubscribe();
+        });
         this.reload();
     }
 
@@ -40,7 +50,7 @@ export class ListCollectionsComponent implements OnInit {
     }
 
     create(form: any) {
-        let s= this.listCollectionService.create(form.name).subscribe(result=>
+        let s= this.listCollectionService.create(form.name, form.listtype).subscribe(result=>
             {
                 console.log("Creating collection: ", result);
                 this.router.navigate([`/${result.id}`]);

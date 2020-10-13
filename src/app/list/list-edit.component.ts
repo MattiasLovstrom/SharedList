@@ -1,10 +1,10 @@
 import { Component, OnInit, } from '@angular/core';
-import { ListService, List, Row } from '../services/list.service';
+import { ListService, List, Row, Column } from '../services/list.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormControl, FormArray, FormBuilder } from '@angular/forms';
 import { map, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
+import { CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 import { Title } from '@angular/platform-browser';
 
 @Component({
@@ -80,8 +80,12 @@ export class ListEditComponent implements OnInit{
       
       var rowsArray = this.form.getRawValue().rows;
       var rows = [];
-      rowsArray.forEach(x=>rows.push(new Row(x.col1)));
-      
+      rowsArray.forEach((x)=>{
+        var row = new Row(); 
+        row.columns.push(new Column(null, 0, "false", "boolean"));
+        row.columns.push(new Column(null, 1, x.col1, "text"));
+        rows.push(row);
+      });
       this.list.name = name;
       this.list.category = category;
       this.list.created = time;

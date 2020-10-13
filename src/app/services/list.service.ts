@@ -113,17 +113,22 @@ export class List{
 }
 
 export class Row{
-    constructor(text: string){
+    constructor(){
         this.id = newGuid();
-
-        this.columns = [ 
-            new Column("checked", 0, "false", "boolean"),
-            new Column("text", 1, text, "text")
-        ];
     }
+
     id: string;
     
     columns: Column[] = [];
+
+    IsEmpty() : boolean {
+        this.columns.forEach((column)=>{
+            let c = Object.assign(new Column(null, null,null,null), column)
+            if (!c.IsEmpty()) return false;
+        });      
+
+        return true;
+    }
 }
 
 export class Column{
@@ -139,7 +144,9 @@ export class Column{
     content: any;
     type: string;
     
- 
+    IsEmpty() {
+        if (this.content instanceof  String) return this.content.length == 0;
+    }
 }
 
 function newGuid() {

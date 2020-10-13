@@ -1,6 +1,6 @@
 <header>
     <h1>{{collection?.name}}</h1>
-    <form #listForm="ngForm" novalidate (ngSubmit)="createList(listForm.value)">
+    <form #listForm="ngForm" novalidate (ngSubmit)="createList()">
         <input type="text" name="name" placeholder="Name of new list" [(ngModel)]="listName"/>
         <button id="create-list" title="Create" class="fa fa-plus"></button>
     </form>
@@ -12,11 +12,11 @@
     <button title="Copy" (click)="copy(currentList)" class="fa fa-copy"></button>
     <div class="row" *ngFor="let row of currentList.rows; let i = index">
         <i cdkDrag  cdkDragLockAxis="y" class="fa fa-arrows"></i>
-        <row [row]="row" (changed)="onChanged($event)"></row>
+        <row *ngIf="editingRow != i" [row]="row" (changed)="onChanged($event)"></row>
+        <edit-row *ngIf="editingRow == i" [row]="row" (changed)="onChanged($event)"></edit-row>
         <button title="Remove" class="fa fa-times" (click)="removeRow(i)" [tabindex]="i + 10000"></button>
     </div>
-    <button id="add-row"  #addRowButton title="Add row" type="button" class="add-row fa fa-plus" (click)="addRowOnClick(addRowButton, editRow)" [tabindex]="900">Add a row</button>
-    <textarea class="row" [hidden]="!editing" #editRow (keydown.enter)="addRow(editRow)"></textarea>
+    <button id="add-row"  #addRowButton title="Add row" type="button" class="add-row fa fa-plus" (click)="addRowOnClick()" [tabindex]="900">Add a row</button>
 </div>
 
 <div *ngIf="lists">
@@ -27,10 +27,8 @@
         </a>
         <button title="Copy" (click)="copy(list)" class="fa fa-copy"></button>
         <div class="row" *ngFor="let row of list.rows">
-            <button title="Add row to current list" type="button" class="fa fa-angle-double-up" (click)="addRowValue(row.columns[1].content)"></button>
-            <ng-container *ngFor="let column of row.columns">
-                <label *ngIf="column.type=='text'">{{row.columns[1].content}}</label>
-            </ng-container>
+            <button title="Add row to current list" type="button" class="fa fa-angle-double-up" (click)="copyRow(row)"></button>
+            <row [row]="row"></row>
             <br>
         </div>
     </li>

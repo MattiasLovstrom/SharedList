@@ -30,3 +30,13 @@ Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protrac
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+
+
+## Clean database from old test lists
+DELETE FROM [dbo].[ListCollection]
+  where name like '__testlist'
+  and deleted is not null
+
+DELETE FROM [dbo].[List]
+  where name like '__testlist'
+  and deleted is not null
