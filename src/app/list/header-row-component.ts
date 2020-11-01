@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ListTypeService } from '../services/list-type.service';
+import { ColumnSpec, ListTypeService } from '../services/list-type.service';
 import { List } from '../services/list.service';
 
 @Component({
@@ -7,7 +7,7 @@ import { List } from '../services/list.service';
     template: `
     <div class="header-row">
         <div *ngFor="let column of columns">
-            <label>{{column}}</label> 
+            <label [class]="column.type">{{column.name}}</label> 
         </div>
     </div>
     `
@@ -16,14 +16,12 @@ export class HeaderRowComponent implements OnInit {
     @Input() list: List;
     @Input() type: string;
 
-    columns: string[] = [];
+    columns: ColumnSpec[] = [];
 
     constructor(private listTypeService: ListTypeService) {
     }
     ngOnInit(): void {
         var rowSpec = this.listTypeService.GetRowSpec(this.type);
-        rowSpec.columns.forEach(columnSpec=>{
-            this.columns.push(columnSpec.name);
-        })
+        this.columns = rowSpec.columns;
     }
 }

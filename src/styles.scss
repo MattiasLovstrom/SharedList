@@ -93,8 +93,8 @@ p:nth-child(odd) {
     overflow-wrap: break-word;
     display: inline-block;
     max-width: 70%;
+    margin-left: 0.5rem;
 }
-
 
 .row {
     margin-top: 1px;
@@ -129,11 +129,12 @@ input[type=checkbox]:checked + label {
 } 
  
 .row label  {
-    float: left;
     overflow-wrap: break-word;
     display: inline-block;
     max-width: 70%;
+    margin-left: 0.5rem;
 }
+
 
 .row button {
     text-align: right;

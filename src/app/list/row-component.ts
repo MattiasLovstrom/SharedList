@@ -6,9 +6,9 @@ import { Command, EditCommand } from './lists.component';
     selector: 'row',
     template: `
         <ng-container *ngFor="let column of row.columns">
-            <input *ngIf="column.type=='boolean'" type="checkbox" id="i" name="ossm" [checked]="column.content == 'true'" (click)="toggleRow()"> 
-            <label *ngIf="column.type=='text'">{{column.content}}</label>
-            <label *ngIf="column.type=='number'">{{column.content}}</label>
+            <input *ngIf="column.type=='boolean'" type="checkbox" id="i" name="ossm" [checked]="column.content == 'true'" (click)="toggleRow()" [class]="column.type"> 
+            <label *ngIf="column.type=='text'" [class]="column.type">{{column.content}}</label>
+            <label *ngIf="column.type=='number'" [class]="column.type">{{column.content}}</label>
         </ng-container>
     `
 })
