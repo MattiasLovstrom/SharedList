@@ -8,6 +8,7 @@ import { ListCollectionService, Collection } from '../services/list-collection.s
 import { Title } from '@angular/platform-browser';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 import { StatusService } from '../services/status.service';
+import { ListTypeService } from '../services/list-type.service';
 
 @Component({
     selector: 'sharedlist-list',
@@ -36,6 +37,7 @@ export class ListsComponent implements OnInit {
         private router: Router,
         private route: ActivatedRoute, 
         private titleService: Title, 
+        private listTypeService: ListTypeService,
         private status: StatusService) {}
 
     ngOnInit(): void {
@@ -90,9 +92,9 @@ export class ListsComponent implements OnInit {
                 if ((Date.now() - this.lastUpdate) > 60000)
                 {
                     this.lastUpdate = Date.now();
-                    console.log('reload');
                     let s = this.listService.read(this.collectionId).subscribe(result => {
                         this.currentList = result[0];
+                        console.log('reload', this.currentList);
                         s.unsubscribe();
                     });    
                 }
@@ -115,7 +117,7 @@ export class ListsComponent implements OnInit {
         var currentStatus = this.editStatus
         this.editStatus = EditStatus.None;
             
-        var row = this.listCollectionService.NewRow(this.collection.type);
+        var row = this.listTypeService.GetRowSpec(this.collection.type).NewRow();
         this.currentList.rows.push(row);
         this.editingRow = this.currentList.rows.length - 1;
 

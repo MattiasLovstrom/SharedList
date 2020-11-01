@@ -5,6 +5,7 @@ import { ListsComponent } from './lists.component';
 import { RouterModule } from '@angular/router';
 import { ShowAsDate } from '../show-as-date.pipe';
 import {DragDropModule} from '@angular/cdk/drag-drop';
+import { HeaderRowComponent } from './header-row-component';
 import { RowComponent } from './row-component';
 import { EditRowComponent } from './edit-row-component';
 
@@ -12,6 +13,7 @@ import { EditRowComponent } from './edit-row-component';
     declarations: [
         ListsComponent,
         ShowAsDate,
+        HeaderRowComponent,
         RowComponent,
         EditRowComponent
     ], 

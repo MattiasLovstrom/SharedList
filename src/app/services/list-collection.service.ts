@@ -7,20 +7,9 @@ import { Row, Column } from './list.service';
     providedIn: "root"
 })
 export class ListCollectionService {
-    NewRow(type: string) : Row  {
-            var row = new Row();
-            if (type === 'traning') {
-                row.columns.push(new Column(null, 0, "false", "boolean"));
-                row.columns.push(new Column(null, 1, "", "text"));
-                row.columns.push(new Column(null, 2, "0", "number"));
-                row.columns.push(new Column(null, 3, "0", "number")); 
-            } else {
-                row.columns.push(new Column(null, 0, "false", "boolean"));
-                row.columns.push(new Column(null, 1, "", "text"));
-            }
-        
-            return row;
-    }
+    
+
+
 
     private readonly BaseUrl;
 

@@ -78,6 +78,24 @@ p:nth-child(odd) {
     background-color: lightyellow;
 }
 
+.header-row {
+    margin-top: 1px;
+    border: solid 1px;
+    border-radius: 3px;
+    padding: 5px;
+    width: 100%;
+    overflow: auto;
+    vertical-align: top;
+}
+
+.header-row label  {
+    float: left;
+    overflow-wrap: break-word;
+    display: inline-block;
+    max-width: 70%;
+}
+
+
 .row {
     margin-top: 1px;
     border: solid 1px;

@@ -2,6 +2,7 @@ import { Component, Input, Output, EventEmitter, OnInit, ViewChildren, ElementRe
 import { Column, Row} from '../services/list.service';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { EditCommand, Command } from './lists.component';
+import { ListTypeService } from '../services/list-type.service';
 
 @Component({
     selector: 'edit-row',
@@ -10,7 +11,7 @@ import { EditCommand, Command } from './lists.component';
         <input #focusInput formControlName="{{firstColumnSpec.nameInForm}}" placeholder="{{firstColumnSpec.placeholder}}">
         <ng-container *ngFor="let column of columnSpec">
             <input *ngIf="column.column.type=='text'" formControlName="{{column.nameInForm}}" placeholder="{{column.placeholder}}" >
-            <select *ngIf="column.column.type=='number'" formControlName="{{column.nameInForm}}" [value]="3">
+            <select *ngIf="column.column.type=='number'" formControlName="{{column.nameInForm}}" [value]="column.defaultValue">
                 <option *ngFor="let val of column.values">
                     {{val}}
                 </option>
@@ -22,6 +23,7 @@ import { EditCommand, Command } from './lists.component';
 })
 export class EditRowComponent implements OnInit, AfterViewInit  {
     @Input() row: Row;
+    @Input() type: string;
     @Output() changed = new EventEmitter<EditCommand>();
 
     @ViewChild('focusInput', null) focusInput: ElementRef;
@@ -30,22 +32,37 @@ export class EditRowComponent implements OnInit, AfterViewInit  {
     firstColumnSpec: ColumnSpec;
     columnSpec: ColumnSpec[] = [];
 
-    constructor(private formBuiler: FormBuilder) {
-    }
+    constructor(
+        private formBuiler: FormBuilder,
+        private listTypeService: ListTypeService)
+    {}
+    
+
     ngAfterViewInit(): void {
         this.focusInput.nativeElement.focus();        
     }
 
     ngOnInit(): void {
-        this.row.columns.forEach((column) =>{
-            if (column.type != 'boolean'){
-                this.columnSpec.push(new ColumnSpec(column));
+        var rowSpec = this.listTypeService.GetRowSpec(this.type);
+
+        rowSpec.columns.forEach((columnSpec)=> {
+            if (columnSpec.type != 'boolean'){
+                this.columnSpec.push(
+                    {
+                        placeholder: columnSpec.name,
+                        index: columnSpec.index,
+                        column: this.row.columns[columnSpec.index],
+                        nameInForm: "column" + columnSpec.index,
+                        defaultValue: columnSpec.defaultValue,
+                        class:"edit-row__" + columnSpec.type,
+                        values: columnSpec.intervalsAsStrings()
+                    })
             }
         });
         
         var formControlNames: {[k: string]: any} = {};
         this.columnSpec.forEach((column)=>{
-            formControlNames[column.nameInForm] = "";
+            formControlNames[column.nameInForm] = column.defaultValue;
         });
         
         this.firstColumnSpec = this.columnSpec[0];
@@ -71,6 +88,7 @@ class ColumnSpec {
     index: number;
     column: Column;
     nameInForm: string;
+    defaultValue: any;
     class:string;
     values: string[];
     

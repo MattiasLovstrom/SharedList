@@ -10,10 +10,11 @@
         <strong>{{currentList.name}}</strong> {{ currentList.created | showAsDate }}
     </a>
     <button title="Copy" (click)="copy(currentList)" class="fa fa-copy"></button>
+    <header-row [list]="currentList" [type]="collection?.type"></header-row>
     <div class="row" *ngFor="let row of currentList.rows; let i = index">
         <i cdkDrag  cdkDragLockAxis="y" class="fa fa-arrows"></i>
         <row *ngIf="editingRow != i" [row]="row" (changed)="onChanged($event)"></row>
-        <edit-row *ngIf="editingRow == i" [row]="row" (changed)="onChanged($event)"></edit-row>
+        <edit-row *ngIf="editingRow == i" [row]="row" [type]="collection?.type" (changed)="onChanged($event)"></edit-row>
         <button title="Remove" class="fa fa-times" (click)="removeRow(i)" [tabindex]="i + 10000"></button>
     </div>
     <button id="add-row"  #addRowButton title="Add row" type="button" class="add-row fa fa-plus" (click)="addRowOnClick()" [tabindex]="900">Add a row</button>
