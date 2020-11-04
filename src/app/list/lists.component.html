@@ -14,7 +14,6 @@
 
     <div class="row">
         <div class="col-md-6">
-
             <div *ngIf="currentList" cdkDropList (cdkDropListDropped)="drop($event)">
                 <a routerLink="/{{collectionId}}/{{currentList.id}}" routerLinkActive="active">
                     <strong>{{currentList.name}}</strong> {{ currentList.created | showAsDate }}
@@ -22,7 +21,7 @@
                 <button title="Copy" (click)="copy(currentList)" class="btn fa fa-copy"></button>
                 <header-row class="list-row header-row" [list]="currentList" [type]="collection?.type"></header-row>
                 <div class="list-row" *ngFor="let row of currentList.rows; let i = index">
-                    <i cdkDrag cdkDragLockAxis="y" class="fa fa-arrows"></i>
+                    <i *ngIf="editingRow != i" cdkDrag cdkDragLockAxis="y" class="fa fa-arrows"></i>
                     <row *ngIf="editingRow != i" [row]="row" (changed)="onChanged($event)"></row>
                     <edit-row *ngIf="editingRow == i" [row]="row" [type]="collection?.type"
                         (changed)="onChanged($event)">

@@ -7,7 +7,8 @@ import { ListTypeService } from '../services/list-type.service';
 @Component({
     selector: 'edit-row',
     template: `
-    <form class="list-edit-row" [formGroup]="rowForm" (ngSubmit)="save()">
+    <form  [formGroup]="rowForm" (ngSubmit)="save()">
+        <div class="list-edit-row"> 
         <div class="column-text">
             <input class="column-text" #focusInput formControlName="{{firstColumnSpec.nameInForm}}" placeholder="{{firstColumnSpec.placeholder}}">
         </div>
@@ -21,9 +22,11 @@ import { ListTypeService } from '../services/list-type.service';
                 </option>
             </select>
         </ng-container>
-        <button type="submit" class="btn fa fa-plus"></button>
-    </form>
-    `   
+        </div>
+        <button type="submit" class="btn btn-primary">Save</button>
+        <button class="btn btn-secondary" (click)="cancel()">Cancel</button>   
+        </form>
+    `
 })
 export class EditRowComponent implements OnInit, AfterViewInit  {
     @Input() row: Row;
@@ -76,7 +79,7 @@ export class EditRowComponent implements OnInit, AfterViewInit  {
 
         console.log(this.columnSpec);
     }
-    
+
     save() {
         this.firstColumnSpec.column.content = this.rowForm.get(this.firstColumnSpec.nameInForm).value;
         this.columnSpec.forEach(column => {
@@ -84,6 +87,10 @@ export class EditRowComponent implements OnInit, AfterViewInit  {
         });
         this.changed.emit(new EditCommand(Command.Update, this.row));
         this.changed.emit(new EditCommand(Command.Create, null));
+    }
+    
+    cancel() {
+        this.changed.emit(new EditCommand(Command.Delete, this.row)); 
     }
 }
 

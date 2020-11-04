@@ -68,7 +68,7 @@ header form input{
       width: 2rem;
   }
   
-  .list-row button {
+  .list-row:last-child {
       width: 1rem;
   }
   
@@ -76,10 +76,12 @@ header form input{
       display: flex;
       align-items: center;
       flex-grow: 10;
+      width: 100%;
   }   
   
+
   .list-edit-row * {
-      margin: 1;
+      margin: 1px;
   }
   
   .list-edit-row select {
@@ -88,5 +90,5 @@ header form input{
   }
   
   .list-edit-row button {
-      width: 1rem;
+      width: auto;
   }

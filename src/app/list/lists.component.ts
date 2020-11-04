@@ -90,7 +90,7 @@ export class ListsComponent implements OnInit {
               });
             } else if (this.editStatus == EditStatus.Load)
             {
-                if ((Date.now() - this.lastUpdate) > 10000)
+                if ((Date.now() - this.lastUpdate) > 60000)
                 {
                     this.lastUpdate = Date.now();
                     let s = this.listService.read(this.collectionId).subscribe(result => {
@@ -131,6 +131,9 @@ export class ListsComponent implements OnInit {
         } else if (command.command == Command.Create)
         {
             this.addRowOnClick();
+        } else if (command.command == Command.Delete)
+        {
+            this.currentList.rows.pop();
         }        
     }
 
