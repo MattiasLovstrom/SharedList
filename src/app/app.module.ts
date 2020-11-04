@@ -13,6 +13,7 @@ import { ListCollectionsModule } from './list/list-collections.module';
 import { ListCollectionsComponent } from './list/list-collections.component';
 
 import { HttpClientModule } from '@angular/common/http'; 
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 const routes: Routes = [
   { path: '', component: ListCollectionsComponent },
@@ -32,7 +33,8 @@ const routes: Routes = [
     ListViewModule,
     RouterModule.forRoot(routes),
     ListCollectionsModule,
-    HttpClientModule
+    HttpClientModule,
+    NgbModule
   ],
   providers: [],
   bootstrap: [AppComponent]

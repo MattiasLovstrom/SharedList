@@ -7,17 +7,21 @@ import { ListTypeService } from '../services/list-type.service';
 @Component({
     selector: 'edit-row',
     template: `
-    <form   [formGroup]="rowForm" (ngSubmit)="save()">
-        <input #focusInput formControlName="{{firstColumnSpec.nameInForm}}" placeholder="{{firstColumnSpec.placeholder}}">
+    <form class="list-edit-row" [formGroup]="rowForm" (ngSubmit)="save()">
+        <div class="column-text">
+            <input class="column-text" #focusInput formControlName="{{firstColumnSpec.nameInForm}}" placeholder="{{firstColumnSpec.placeholder}}">
+        </div>
         <ng-container *ngFor="let column of columnSpec">
-            <input *ngIf="column.column.type=='text'" formControlName="{{column.nameInForm}}" placeholder="{{column.placeholder}}" >
-            <select *ngIf="column.column.type=='number'" formControlName="{{column.nameInForm}}" [value]="column.defaultValue">
+            <div class="column-text">
+                <input *ngIf="column.column.type=='text'" class="" formControlName="{{column.nameInForm}}" placeholder="{{column.placeholder}}" >
+            </div>
+            <select *ngIf="column.column.type=='number'" class="column-number" formControlName="{{column.nameInForm}}" [value]="column.defaultValue">
                 <option *ngFor="let val of column.values">
                     {{val}}
                 </option>
             </select>
         </ng-container>
-        <button type="submit">Save</button>
+        <button type="submit" class="btn fa fa-plus"></button>
     </form>
     `   
 })

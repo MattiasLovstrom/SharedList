@@ -5,12 +5,12 @@ import { List } from '../services/list.service';
 @Component({
     selector: 'header-row',
     template: `
-    <div class="header-row">
-        <div *ngFor="let column of columns">
-            <label [class]="column.type">{{column.name}}</label> 
-        </div>
-    </div>
-    `
+        <div class="column-empty"></div>
+        <ng-container *ngFor="let column of columns">
+            <label [class]="'column-'+column.type">{{column.name}}</label> 
+        </ng-container>
+        <div class="column-empty"></div>
+        `
 })
 export class HeaderRowComponent implements OnInit {
     @Input() list: List;
