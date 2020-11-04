@@ -80,14 +80,15 @@ export class ListsComponent implements OnInit {
     listSync() {
         if (this.editStatus == EditStatus.Save)
             {
+                this.editStatus = EditStatus.None;
                 let s1 = this.listService.update(this.currentList).subscribe(result=>{
-                    this.currentList = result;
+                    //this.currentList = result;
                     this.editStatus = EditStatus.Load;
                     s1.unsubscribe();
               });
             } else if (this.editStatus == EditStatus.Load)
             {
-                if ((Date.now() - this.lastUpdate) > 60000)
+                if ((Date.now() - this.lastUpdate) > 10000)
                 {
                     this.lastUpdate = Date.now();
                     console.log('reload');
