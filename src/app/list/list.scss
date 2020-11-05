@@ -1,4 +1,4 @@
-header form input{
+header form input {
     display: none;
 }
 
@@ -19,76 +19,81 @@ header form input{
 .list-row {
     display: flex;
     align-items: center;
-  
+
     border: 1px solid black;
     min-height: 2rem;
     border-radius: 0.2rem;
     margin-bottom: 0.2rem;
-  }
-  
-  .header-row {
-      font-size: 0.7rem;
-      background-color: lightgray;
-  }
-  
-  .list-row row{
-      display: flex;
-      align-items: center;
-      flex-grow: 10;
-  }
-  
-  .list-edit edit-row {
-      background-color: blue;
-      display: flex;
-      align-items: center;
-      flex-grow: 10;
-  }
-  
-  .list-row * {
-      margin: 0.2rem;
-  }
-  
-  .column-text {
-      flex-grow: 8;
-  }
-  
-  .column-number {
-      width: 3rem;
-  }
-  
-  .column-boolean {
-      width: 3rem;
-  }
-  
-  .column-empty {
-      width: 2rem;
-  }
-  
-  .list-row:first-child {
-      width: 2rem;
-  }
-  
-  .list-row:last-child {
-      width: 1rem;
-  }
-  
-  .list-edit-row {
-      display: flex;
-      align-items: center;
-      flex-grow: 10;
-      width: 100%;
-  }   
-  
+}
 
-  .list-edit-row * {
-      margin: 1px;
-  }
-  
-  .list-edit-row select {
-      width: 3rem;
-      height: 2rem;
-  }
-  
-  .list-edit-row button {
-      width: auto;
-  }
+.header-row {
+    font-size: 0.7rem;
+    background-color: lightgray;
+}
+
+.list-row row {
+    display: flex;
+    align-items: center;
+    flex-grow: 10;
+}
+
+.list-edit edit-row {
+    background-color: blue;
+    display: flex;
+    align-items: center;
+    flex-grow: 10;
+}
+
+.list-row * {
+    margin: 0.2rem;
+}
+
+.column-text {
+    flex-grow: 8;
+}
+
+.column-number {
+    width: 3rem;
+}
+
+.column-boolean {
+    width: 3rem;
+}
+
+.column-empty {
+    width: 2rem;
+}
+
+.list-row:first-child {
+    width: 2rem;
+}
+
+.list-row button {
+    width: 1rem;
+}
+
+.list-edit-row {
+    display: flex;
+    align-items: center;
+    flex-grow: 10;
+    width: 100%;
+    flex-direction: column;
+}
+
+.list-edit-row * {
+    align-self: start;
+    margin: 1px;
+}
+
+.list-edit-row input {
+    flex-grow: 1;
+}
+
+.list-edit-row select {
+    width: 4rem;
+    flex-grow: 1;
+}
+
+//   .list-edit-row button {
+//       width: auto;
+//   }

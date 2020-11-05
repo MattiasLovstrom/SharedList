@@ -9,19 +9,19 @@ import { ListTypeService } from '../services/list-type.service';
     template: `
     <form  [formGroup]="rowForm" (ngSubmit)="save()">
         <div class="list-edit-row"> 
-        <div class="column-text">
-            <input class="column-text" #focusInput formControlName="{{firstColumnSpec.nameInForm}}" placeholder="{{firstColumnSpec.placeholder}}">
-        </div>
-        <ng-container *ngFor="let column of columnSpec">
             <div class="column-text">
-                <input *ngIf="column.column.type=='text'" class="" formControlName="{{column.nameInForm}}" placeholder="{{column.placeholder}}" >
+             <input class="column-text" #focusInput formControlName="{{firstColumnSpec.nameInForm}}" placeholder="{{firstColumnSpec.placeholder}}">
             </div>
-            <select *ngIf="column.column.type=='number'" class="column-number" formControlName="{{column.nameInForm}}" [value]="column.defaultValue">
-                <option *ngFor="let val of column.values">
-                    {{val}}
-                </option>
-            </select>
-        </ng-container>
+            <ng-container *ngFor="let column of columnSpec">
+                <div class="column-text">
+                    <input *ngIf="column.column.type=='text'" class="form-control" formControlName="{{column.nameInForm}}" placeholder="{{column.placeholder}}" >
+                </div>
+                <select *ngIf="column.column.type=='number'" class="column-number form-control" formControlName="{{column.nameInForm}}" [value]="column.defaultValue">
+                    <option *ngFor="let val of column.values">
+                        {{val}}
+                    </option>
+                </select>
+            </ng-container>
         </div>
         <button type="submit" class="btn btn-primary">Save</button>
         <button class="btn btn-secondary" (click)="cancel()">Cancel</button>   
