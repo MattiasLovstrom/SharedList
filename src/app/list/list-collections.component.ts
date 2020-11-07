@@ -13,8 +13,10 @@ import { ListType, ListTypeService } from '../services/list-type.service';
     <div class="list-header">
         <form #listCollectionForm="ngForm" novalidate (ngSubmit)="create(listCollectionForm.value)">
             <input type="text" name="name" placeholder="Name of new list collection" ngModel />
-            <select id="selectType" name="listtype" ngModel>
-                <option *ngFor="let x of types" [ngValue]="x.id">{{x.name}}</option>
+            <select name="listType" ngModel>
+                <option *ngFor="let listtype of types">
+                    {{listtype.name}}
+                </option>
             </select>
             <button  title="Create new list collection" class="btn fa fa-plus"></button>
         </form>
@@ -45,6 +47,7 @@ export class ListCollectionsComponent implements OnInit {
             this.types = result;
             s.unsubscribe();
         });
+        
         this.reload();
     }
 
@@ -56,7 +59,8 @@ export class ListCollectionsComponent implements OnInit {
     }
 
     create(form: any) {
-        let s = this.listCollectionService.create(form.name, form.listtype).subscribe(result => {
+        console.log("Start creating collection: ", form);
+        let s = this.listCollectionService.create(form.name, form.listType).subscribe(result => {
             console.log("Creating collection: ", result);
             this.router.navigate([`/${result.id}`]);
             s.unsubscribe();

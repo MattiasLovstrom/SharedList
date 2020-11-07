@@ -50,6 +50,10 @@ export class ListTypeService {
             rowSpec.columns.push(new ColumnSpec(2, "Kg", "number", 80, [{start:1, stop:10, step:1}, {start:15, stop:50, step:5}, {start:60, stop:200, step:10}]));
             rowSpec.columns.push(new ColumnSpec(3, "Reps", "number", 8,  [{start:1, stop:20, step:1}]));
             rowSpec.columns.push(new ColumnSpec(4, "Sets", "number", 5, [{start:1, stop:10, step:1}]));
+        } else if (type === 'calories') {
+            rowSpec.columns.push(new ColumnSpec(0, "Text", "text"));
+            rowSpec.columns.push(new ColumnSpec(1, "Cals", "number", 80, [{start:50, stop:1000, step:50}], "sum"));
+            rowSpec.columns.push(new ColumnSpec(2, "Proteine", "number", 10,  [{start:1, stop:100, step:1}], "sum"));
         } else {
             rowSpec.columns.push(new ColumnSpec(0, "Done", "boolean"));
             rowSpec.columns.push(new ColumnSpec(1, "Text", "text"));
@@ -77,12 +81,13 @@ export class RowSpec{
 
 export class ColumnSpec {
     defaultValue: any;
-    constructor(index: number, name: string, type: string, defaultValue?: any, intervals?: Interval[]){
+    constructor(index: number, name: string, type: string, defaultValue?: any, intervals?: Interval[], headerAction?: string){
         this.index = index;
         this.name = name;
         this.type = type;
         this.defaultValue = defaultValue;
         this.intervals = intervals;
+        this.headerAction = headerAction;
     }
 
     public intervalsAsStrings(): string[] {
@@ -103,6 +108,7 @@ export class ColumnSpec {
     public name: string;
     public type: string;
     public intervals?: Interval[] = [];
+    public headerAction?: string;
 }
 
 export class ListType {
@@ -110,7 +116,6 @@ export class ListType {
     name: string;
     columns: ColumnSpec[] = [];
 }
-
 
 export class Interval{
     start: number;
