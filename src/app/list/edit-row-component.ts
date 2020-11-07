@@ -13,9 +13,6 @@ import { ListTypeService } from '../services/list-type.service';
              <input class="column-text" #focusInput formControlName="{{firstColumnSpec.nameInForm}}" placeholder="{{firstColumnSpec.placeholder}}">
             </div>
             <ng-container *ngFor="let column of columnSpec">
-                <div class="column-text">
-                    <input *ngIf="column.column.type=='text'" class="form-control" formControlName="{{column.nameInForm}}" placeholder="{{column.placeholder}}" >
-                </div>
                 <select *ngIf="column.column.type=='number'" class="column-number form-control" formControlName="{{column.nameInForm}}" [value]="column.defaultValue">
                     <option *ngFor="let val of column.values">
                         {{val}}

@@ -35,6 +35,7 @@ header form input {
     display: flex;
     align-items: center;
     flex-grow: 10;
+    width: 100%;
 }
 
 .list-edit edit-row {
@@ -50,6 +51,7 @@ header form input {
 
 .column-text {
     flex-grow: 8;
+    width: 100%;
 }
 
 .column-number {
@@ -68,6 +70,10 @@ header form input {
     width: 2rem;
 }
 
+.list-row edit-row  {
+    width: 100%;
+}
+
 .remove-button {
     width: 1rem;
 }
@@ -77,7 +83,7 @@ header form input {
     align-items: center;
     flex-grow: 10;
     width: 100%;
-    flex-direction: column;
+    flex-wrap: wrap;
 }
 
 .list-edit-row * {
