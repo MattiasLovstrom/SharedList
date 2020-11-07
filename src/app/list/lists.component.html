@@ -26,7 +26,7 @@
                     <edit-row *ngIf="editingRow == i" [row]="row" [type]="collection?.type"
                         (changed)="onChanged($event)">
                     </edit-row>
-                    <button *ngIf="editingRow != i" title="Remove" class="btn fa fa-times" (click)="removeRow(i)" [tabindex]="i + 10000"></button>
+                    <button *ngIf="editingRow != i" title="Remove" class="remove-button btn fa fa-times" (click)="removeRow(i)" [tabindex]="i + 10000"></button>
                 </div>
                 <button id="add-row" #addRowButton title="Add row" type="button" class="add-row fa fa-plus"
                     (click)="addRowOnClick()" [tabindex]="900">Add a row</button>
