@@ -43,6 +43,7 @@
                             <strong>{{list.name}}</strong> {{ list.created | showAsDate }}
                         </a>
                         <button title="Copy" (click)="copy(list)" class="btn fa fa-copy"></button>
+                        <header-row class="list-row header-row" [list]="list" [type]="collection?.type"></header-row>
                         <div class="list-row" *ngFor="let row of list.rows">
                             <row [row]="row"></row>
                             <button title="Add row to current list" type="button" class="btn fa fa-angle-double-up"
