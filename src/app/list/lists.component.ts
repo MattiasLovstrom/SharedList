@@ -115,25 +115,25 @@ export class ListsComponent implements OnInit {
     }
 
     addRowOnClick(){
-        var currentStatus = this.editStatus
         this.editStatus = EditStatus.None;
             
         var row = this.listTypeService.GetRowSpec(this.collection.type).NewRow();
         this.currentList.rows.push(row);
         this.editingRow = this.currentList.rows.length - 1;
-
-        this.editStatus = currentStatus;
     }
 
     onChanged(command: EditCommand) {
         if (command.command == Command.Update){
             this.editStatus = EditStatus.Save;
+            this.editingRow = null;
         } else if (command.command == Command.Create)
         {
             this.addRowOnClick();
         } else if (command.command == Command.Delete)
         {
             this.currentList.rows.pop();
+            this.editStatus = EditStatus.Save;
+            this.editingRow = null;
         }        
     }
 
