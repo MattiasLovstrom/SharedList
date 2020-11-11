@@ -126,6 +126,7 @@ export class ListsComponent implements OnInit {
         if (command.command == Command.Update){
             this.editStatus = EditStatus.Save;
             this.editingRow = null;
+            this.listSync();
         } else if (command.command == Command.Create)
         {
             this.addRowOnClick();
