@@ -21,7 +21,7 @@ import { ListTypeService } from '../services/list-type.service';
             </ng-container>
         </div>
         <button type="submit" class="btn btn-primary">Save</button>
-        <button class="btn btn-secondary" (click)="cancel()">Cancel</button>   
+        <button class="btn btn-secondary" (click)="delete()">Delete</button>   
         </form>
     `
 })
@@ -57,7 +57,7 @@ export class EditRowComponent implements OnInit, AfterViewInit  {
                         index: columnSpec.index,
                         column: this.row.columns[columnSpec.index],
                         nameInForm: "column" + columnSpec.index,
-                        defaultValue: columnSpec.defaultValue,
+                        defaultValue: this.row.columns[columnSpec.index].content,
                         class:"edit-row__" + columnSpec.type,
                         values: columnSpec.intervalsAsStrings()
                     })
@@ -83,10 +83,9 @@ export class EditRowComponent implements OnInit, AfterViewInit  {
             column.column.content = this.rowForm.get(column.nameInForm).value; 
         });
         this.changed.emit(new EditCommand(Command.Update, this.row));
-        this.changed.emit(new EditCommand(Command.Create, null));
     }
     
-    cancel() {
+    delete() {
         this.changed.emit(new EditCommand(Command.Delete, this.row)); 
     }
 }

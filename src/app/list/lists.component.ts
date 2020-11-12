@@ -122,11 +122,20 @@ export class ListsComponent implements OnInit {
         this.editingRow = this.currentList.rows.length - 1;
     }
 
+    editRowClick(i: number) {
+        this.editingRow = i;
+    }
+
     onChanged(command: EditCommand) {
         if (command.command == Command.Update){
             this.editStatus = EditStatus.Save;
-            this.editingRow = null;
             this.listSync();
+            if (this.editingRow == this.currentList.rows.length - 1)
+            {
+                this.addRowOnClick();
+            } else{
+                this.editingRow = null;
+            }
         } else if (command.command == Command.Create)
         {
             this.addRowOnClick();
@@ -136,12 +145,6 @@ export class ListsComponent implements OnInit {
             this.editStatus = EditStatus.Save;
             this.editingRow = null;
         }        
-    }
-
-    removeRow(i: number) {
-        this.editStatus = EditStatus.None;
-        this.currentList.rows.splice(i, 1);
-        this.editStatus = EditStatus.Save;
     }
 
     copyRow(value: Row) {
