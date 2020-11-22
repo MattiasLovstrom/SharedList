@@ -13,7 +13,8 @@ header form input {
 }
 
 .list-header * {
-    flex-grow: 1;
+    flex-grow: 0;
+    font-size: 1.7rem;
 }
 
 .list-row {

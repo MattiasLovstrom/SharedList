@@ -10,7 +10,7 @@ import { ListType, ListTypeService } from '../services/list-type.service';
 <div class="row">
     <div class="col-md-6">
     <h1>List collections</h1>       
-    <div class="list-header">
+    <div>
         <form #listCollectionForm="ngForm" novalidate (ngSubmit)="create(listCollectionForm.value)">
             <input type="text" name="name" placeholder="Name of new list collection" ngModel />
             <select name="listType" ngModel>
