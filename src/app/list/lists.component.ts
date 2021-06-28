@@ -49,18 +49,16 @@ export class ListsComponent implements OnInit {
         .subscribe(async id => {
             this.collectionId = id;
             
-            let s = this.listService.read(id).subscribe(result => {
-                this.currentList = result[0];
-                s.unsubscribe();
-            });
-
-            this.AddListSync(1);
-            
             let s1 = this.listCollectionService.read(id).subscribe(result => {
                 this.collection = result[0];
                 s1.unsubscribe(); 
                 this.titleService.setTitle(this.collection.name + " - Shared list");
                 this.listName = this.collection.name;
+                let s = this.listService.read(id).subscribe(result => {
+                    this.currentList = result[0];
+                    s.unsubscribe();
+                    this.AddListSync(1);
+                });
             });
         });
         
@@ -141,7 +139,8 @@ export class ListsComponent implements OnInit {
             this.addRowOnClick();
         } else if (command.command == Command.Delete)
         {
-            this.currentList.rows.pop();
+            console.log('delete:' + this.editingRow);
+            this.currentList.rows.splice(this.editingRow,1);
             this.editStatus = EditStatus.Save;
             this.editingRow = null;
         }        
