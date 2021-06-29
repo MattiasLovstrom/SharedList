@@ -52,7 +52,7 @@ export class ListTypeService {
             rowSpec.columns.push(new ColumnSpec(4, "Sets", "number", 5, [{start:0, stop:10, step:1}]));
         } else if (type === 'calories') {
             rowSpec.columns.push(new ColumnSpec(0, "Text", "text"));
-            rowSpec.columns.push(new ColumnSpec(1, "Cals", "number", 80, [{start:0, stop:1000, step:50}], "sum"));
+            rowSpec.columns.push(new ColumnSpec(1, "Cals", "number", 150, [{start:0, stop:1000, step:50}], "sum"));
             rowSpec.columns.push(new ColumnSpec(2, "Proteine", "number", 10,  [{start:0, stop:100, step:1}], "sum"));
         } else {
             rowSpec.columns.push(new ColumnSpec(0, "Done", "boolean"));
