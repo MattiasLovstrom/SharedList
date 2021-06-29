@@ -87,12 +87,16 @@ export class ListsComponent implements OnInit {
         } else if (this.editStatus == EditStatus.Load) {
             if ((Date.now() - this.lastUpdate) > 6000) {
                 this.lastUpdate = Date.now();
-                if (this.editingRow && this.editingRow >= 0) return;
-                let s = this.listService.read(this.collectionId).subscribe(result => {
-                    this.currentList = result[0];
-                    console.log('reload', this.currentList);
-                    s.unsubscribe();
-                });
+                console.log('editingRow', this.editingRow);
+                if (this.editingRow && this.editingRow >= 0) {
+                    return;
+                } else {
+                    let s = this.listService.read(this.collectionId).subscribe(result => {
+                        this.currentList = result[0];
+                        console.log('reload', this.currentList);
+                        s.unsubscribe();
+                    });
+                }
             }
         }
     }

@@ -6,10 +6,15 @@ import { Injectable } from '@angular/core';
 export class StatusService {
     public infoMessage: string = "";
     public errorMessage: string = ""
-
+    private messageOnTheWay: boolean = false;
     info(message: string) {
         console.log("Message: " + message);
-        this.infoMessage = message;
+        this.messageOnTheWay = true;
+        setTimeout(() => {
+            if (this.messageOnTheWay){
+                this.infoMessage = message;
+            }
+        }, 1000);
     }
 
     error(message: string) {
@@ -19,6 +24,7 @@ export class StatusService {
 
     clear() {
         console.log("clear");
+        this.messageOnTheWay = false;
         this.infoMessage = "";
         this.errorMessage = "";
     }

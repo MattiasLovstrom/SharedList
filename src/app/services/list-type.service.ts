@@ -20,7 +20,7 @@ export class ListTypeService {
     }
 
     read(id: string = undefined, skip: number = 0, take: number = 10): Observable<ListType[]> {
-        this.status.info("A gang of kittens are lokking for any types of lists…");
+        this.status.info("A gang of kittens are looking for any types of lists…");
         let params = "";
         params = params + "?skip=" + skip;
         params = params + "&take=" + take;
