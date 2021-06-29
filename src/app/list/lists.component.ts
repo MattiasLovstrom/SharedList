@@ -24,7 +24,6 @@ export class ListsComponent implements OnInit {
     countlists = new Pager(1, 10);
     lists: List[] = [];
     currentList: List;
-    editRow: string = "";
     editing: boolean = false;
     editingRow: number = -1;
     editStatus: EditStatus = EditStatus.Load;
@@ -37,8 +36,7 @@ export class ListsComponent implements OnInit {
         private router: Router,
         private route: ActivatedRoute,
         private titleService: Title,
-        private listTypeService: ListTypeService,
-        private status: StatusService) { }
+        private listTypeService: ListTypeService) { }
 
     ngOnInit(): void {
         this.route.paramMap
@@ -68,6 +66,7 @@ export class ListsComponent implements OnInit {
         });
 
         this.languageId = navigator.language;
+        this.readMore();
     }
 
     AddListSync(reloadTime: number) {
@@ -142,6 +141,9 @@ export class ListsComponent implements OnInit {
     }
 
     copyRow(value: Row) {
+        if (value.columns[0].type === "boolean") {
+            value.columns[0].content = "false";
+        }
         this.currentList.rows.push(value);
         this.editStatus = EditStatus.Save;
     }
@@ -157,6 +159,11 @@ export class ListsComponent implements OnInit {
 
     copy(list: List) {
         list.created = undefined;
+        list.rows.forEach(r=> r.columns.forEach(c=>{
+            if (r.columns[0].type === "boolean") {
+                r.columns[0].content = "false";
+            }
+        }))
         let s = this.listService.create(list).subscribe(result => {
             const newList = result;
             this.router.navigate([`/${this.collectionId}/${newList.id}`]);
