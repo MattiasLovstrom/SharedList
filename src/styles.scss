@@ -1,27 +1,39 @@
 @import "~bootstrap/scss/bootstrap";
 @import "./app/list/list.scss";
 
+h1 {
+    display: inline-block;
+    margin: 0;
+}
+
 .list-collections
 {
     display: flex;
     flex-direction: column;
-}
 
-.list-collections li
-{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-}
+    li
+    {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        border: 1px solid;
+        background-size: 100%;
+    }
 
-.list-collections li a
-{
-    flex-grow: 10;
-}
+    li a
+    {
+        flex-grow: 10;
+        padding-left: 1rem;
+        padding-top: 2rem;
+        padding-bottom: 2rem;
+        font-size: 1.5rem;
+        color:#666666;
+    }
 
-.list-collections li button
-{
-    flex-grow: 0;
+    li button
+    {
+        flex-grow: 0;
+    }
 }
 
 .fa-times{
@@ -42,14 +54,10 @@ ol {
 }
 
 li {
-    margin-top: 1em;
+    margin: 0.1em;
     list-style: none;
 }
 
-h1 {
-    display: inline-block;
-    margin: 0;
-}
 
 header button{
     float: right;

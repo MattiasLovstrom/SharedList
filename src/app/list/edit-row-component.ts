@@ -3,7 +3,7 @@ import { Column, Row} from '../services/list.service';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { EditCommand, Command } from './lists.component';
 import { ListTypeService } from '../services/list-type.service';
-
+//https://www.w3schools.com/howto/howto_css_menu_horizontal_scroll.asp
 @Component({
     selector: 'edit-row',
     template: `
