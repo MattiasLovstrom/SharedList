@@ -7,12 +7,7 @@ import { Row, Column } from './list.service';
     providedIn: "root"
 })
 export class ListCollectionService {
-    
-
-
-
     private readonly BaseUrl;
-
     
     collections: Collection[] = [];
     lastCollectionId: number = 0;
