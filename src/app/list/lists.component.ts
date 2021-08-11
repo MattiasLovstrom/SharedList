@@ -163,7 +163,7 @@ export class ListsComponent implements OnInit {
 
     copy(list: List) {
         list.created = undefined;
-        list.rows.forEach(r=> r.columns.forEach(c=>{
+        list.rows.forEach(r => r.columns.forEach(c => {
             if (r.columns[0].type === "boolean") {
                 r.columns[0].content = "false";
             }
@@ -184,6 +184,30 @@ export class ListsComponent implements OnInit {
             this.countlists.hasMore = this.lists.length >= numberOfListsBefore + this.countlists.take;
             subscriber.unsubscribe();
         });
+    }
+
+    sevenDaysAverageCalories() {
+        let sum = 0;
+        let i;
+        for (i = 0; i < 7; i++) {
+            this.lists[i].rows.forEach((row) => {
+                sum += parseInt(row.columns[1].content);
+            });
+        }
+
+        return Math.round(sum / 7);
+    }
+
+    sevenDaysAverageProteine() {
+        let sum = 0;
+        let i;
+        for (i = 0; i < 7; i++) {
+            this.lists[i].rows.forEach((row) => {
+                sum += parseInt(row.columns[2].content);
+            });
+        }
+
+        return Math.round(sum / 7);
     }
 }
 

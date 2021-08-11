@@ -1,60 +1,65 @@
+<div class="row">
+    <div class="col-sm-6">
+        <header class="list-header">
+            <a routerLink="/" routerLinkActive="active" class="btn fa fa-list-ul"></a>
+            <h1>{{collection?.name}}</h1>
+            <form #listForm="ngForm" novalidate (ngSubmit)="createList()">
+                <input type="text" name="name" placeholder="Name of new list" [(ngModel)]="listName" />
+                <button id="create-list" title="Create" class="btn fa fa-plus"></button>
+            </form>
+        </header>
+    </div>
+</div>
 
-    <div class="row">
-        <div class="col-sm-6">
-            <header class="list-header">
-                <a routerLink="/" routerLinkActive="active" class="btn fa fa-list-ul"></a>
-                <h1>{{collection?.name}}</h1>
-                <form #listForm="ngForm" novalidate (ngSubmit)="createList()">
-                    <input type="text" name="name" placeholder="Name of new list" [(ngModel)]="listName" />
-                    <button id="create-list" title="Create" class="btn fa fa-plus"></button>
-                </form>
-            </header>
+<div class="row" *ngIf="collection?.type == 'calories'" >
+    <div class="col-md-6">
+        <label title="Seven days average starting yesterday.">Average: </label>
+        <label><strong>{{sevenDaysAverageCalories()}}</strong>kcal <strong>{{sevenDaysAverageProteine()}}</strong>g</label>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div *ngIf="currentList" cdkDropList (cdkDropListDropped)="drop($event)">
+            <a routerLink="/{{collectionId}}/{{currentList.id}}" routerLinkActive="active">
+                <strong>{{currentList.name}}</strong> {{ currentList.created | showAsDate }}
+            </a>
+            <button title="Copy" (click)="copy(currentList)" class="btn fa fa-copy"></button>
+            <header-row class="list-row header-row" [list]="currentList" [type]="collection?.type"></header-row>
+            <div class="list-row" *ngFor="let row of currentList.rows; let i = index">
+                <i *ngIf="editingRow != i" cdkDrag cdkDragLockAxis="y" class="fa fa-arrows"></i>
+                <row *ngIf="editingRow != i" [row]="row" (changed)="onChanged($event)"></row>
+                <edit-row *ngIf="editingRow == i" [row]="row" [type]="collection?.type" (changed)="onChanged($event)">
+                </edit-row>
+                <button *ngIf="editingRow != i" title="Edit" class="remove-button btn  fa fa-edit"
+                    (click)="editRowClick(i)" [tabindex]="i + 10000"></button>
+            </div>
+            <button id="add-row" #addRowButton title="Add row" type="button" class="add-row fa fa-plus"
+                (click)="addRowOnClick()" [tabindex]="900">Add a row</button>
         </div>
+
     </div>
 
-    <div class="row">
-        <div class="col-md-6">
-            <div *ngIf="currentList" cdkDropList (cdkDropListDropped)="drop($event)">
-                <a routerLink="/{{collectionId}}/{{currentList.id}}" routerLinkActive="active">
-                    <strong>{{currentList.name}}</strong> {{ currentList.created | showAsDate }}
-                </a>
-                <button title="Copy" (click)="copy(currentList)" class="btn fa fa-copy"></button>
-                <header-row class="list-row header-row" [list]="currentList" [type]="collection?.type"></header-row>
-                <div class="list-row" *ngFor="let row of currentList.rows; let i = index">
-                    <i *ngIf="editingRow != i" cdkDrag cdkDragLockAxis="y" class="fa fa-arrows"></i>
-                    <row *ngIf="editingRow != i" [row]="row" (changed)="onChanged($event)"></row>
-                    <edit-row *ngIf="editingRow == i" [row]="row" [type]="collection?.type"
-                        (changed)="onChanged($event)">
-                    </edit-row>
-                    <button *ngIf="editingRow != i" title="Edit" class="remove-button btn  fa fa-edit" (click)="editRowClick(i)" [tabindex]="i + 10000"></button>
-                </div>
-                <button id="add-row" #addRowButton title="Add row" type="button" class="add-row fa fa-plus"
-                    (click)="addRowOnClick()" [tabindex]="900">Add a row</button>
-            </div>
+    <div class="col-md-6">
 
+        <div *ngIf="lists">
+            <ol>
+                <li *ngFor="let list of lists">
+                    <a routerLink="/{{collectionId}}/{{list.id}}" routerLinkActive="active">
+                        <strong>{{list.name}}</strong> {{ list.created | showAsDate }}
+                    </a>
+                    <button title="Copy" (click)="copy(list)" class="btn fa fa-copy"></button>
+                    <header-row class="list-row header-row" [list]="list" [type]="collection?.type"></header-row>
+                    <div class="list-row" *ngFor="let row of list.rows">
+                        <row [row]="row"></row>
+                        <button title="Add row to current list" type="button" class="btn fa fa-angle-double-up"
+                            (click)="copyRow(row)"></button>
+                        <br>
+                    </div>
+                </li>
+            </ol>
         </div>
-
-        <div class="col-md-6">
-
-            <div *ngIf="lists">
-                <ol>
-                    <li *ngFor="let list of lists">
-                        <a routerLink="/{{collectionId}}/{{list.id}}" routerLinkActive="active">
-                            <strong>{{list.name}}</strong> {{ list.created | showAsDate }}
-                        </a>
-                        <button title="Copy" (click)="copy(list)" class="btn fa fa-copy"></button>
-                        <header-row class="list-row header-row" [list]="list" [type]="collection?.type"></header-row>
-                        <div class="list-row" *ngFor="let row of list.rows">
-                            <row [row]="row"></row>
-                            <button title="Add row to current list" type="button" class="btn fa fa-angle-double-up"
-                                (click)="copyRow(row)"></button>
-                            <br>
-                        </div>
-                    </li>
-                </ol>
-            </div>
-            <br />
-            <button id="more" [disabled]="!countlists.hasMore" (click)=readMore()>Old lists</button>
-        </div>
+        <br />
+        <button id="more" [disabled]="!countlists.hasMore" (click)=readMore()>Old lists</button>
     </div>
-
+</div>
